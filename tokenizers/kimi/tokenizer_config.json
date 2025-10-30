@@ -1,0 +1,134 @@
+{
+  "added_tokens_decoder": {
+    "163584": {
+      "content": "[BOS]",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163585": {
+      "content": "[EOS]",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163586": {
+      "content": "<|im_end|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163601": {
+      "content": "<|im_middle|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163587": {
+      "content": "<|im_user|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163588": {
+      "content": "<|im_assistant|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163594": {
+      "content": "<|im_system|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163602": {
+      "content": "<|media_start|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163603": {
+      "content": "<|media_content|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163604": {
+      "content": "<|media_end|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163605": {
+      "content": "<|media_pad|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163838": {
+      "content": "[PAD]",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "163839": {
+      "content": "[UNK]",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    }
+  },
+  "additional_special_tokens": [
+    "<|im_end|>",
+    "<|im_user|>",
+    "<|im_assistant|>",
+    "<|im_system|>",
+    "<|im_middle|>",
+    "<|media_start|>",
+    "<|media_content|>",
+    "<|media_end|>",
+    "<|media_pad|>"
+  ],
+  "bos_token": "[BOS]",
+  "clean_up_tokenization_spaces": false,
+  "eos_token": "[EOS]",
+  "extra_special_tokens": {},
+  "model_max_length": 1048576,
+  "pad_token": "[PAD]",
+  "unk_token": "[UNK]",
+  "tokenizer_class": "TikTokenTokenizer",
+  "chat_template": "{%- for message in messages -%}{%- if loop.first and messages[0]['role'] != 'system' -%}{{'<|im_system|>system<|im_middle|>You are a helpful assistant<|im_end|>'}}{%- endif -%}{%- if message['role'] == 'system' -%}{{'<|im_system|>'}}{%- endif -%}{%- if message['role'] == 'user' -%}{{'<|im_user|>'}}{%- endif -%}{%- if message['role'] == 'assistant' -%}{{'<|im_assistant|>'}}{%- endif -%}{{- message['role'] -}}{{'<|im_middle|>'}}{%- if message['content'] is string -%}{{- message['content'] + '<|im_end|>' -}}{%- else -%}{%- for content in message['content'] -%}{%- if content['type'] == 'image' or 'image' in content or 'image_url' in content -%}{{'<|media_start|>image<|media_content|><|media_pad|><|media_end|>'}}{%- else -%}{{content['text']}}{%- endif -%}{%- endfor -%}{{'<|im_end|>'}}{%- endif -%}{%- endfor -%}{%- if add_generation_prompt -%}{{'<|im_assistant|>assistant<|im_middle|>'}}{%- endif -%}",
+  "auto_map": {
+    "AutoTokenizer": [
+      "tokenization_moonshot.TikTokenTokenizer",
+      null
+    ]
+  }
+}

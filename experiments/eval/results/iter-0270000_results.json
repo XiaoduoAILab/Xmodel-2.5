@@ -1,0 +1,14 @@
+{
+  "arc_challenge": 0.3063,
+  "arc_easy": 0.6006,
+  "bbh": 0.2623,
+  "ceval-valid": 0.2764,
+  "cmmlu": 0.2488,
+  "gsm8k": 0.0159,
+  "hellaswag": 0.5519,
+  "humaneval": 0.0,
+  "mbpp": 0.054,
+  "mmlu": 0.2628,
+  "piqa": 0.7035,
+  "winogrande": 0.5959
+}

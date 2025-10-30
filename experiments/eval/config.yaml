@@ -1,0 +1,63 @@
+# LLM评测配置
+checkpoint_paths:  # 模型检查点路径
+  - "/data2/liuyang/i_line_exp/i_line_s1-hf/iter_*"
+  - "/data/liuyang/models/Qwen3-1.7B"
+  # - "/data/liuyang/models/MiniCPM-1B-sft-bf16"
+  - "/data/liuyang/models/Llama-3.2-1B"
+  - "/data4/liuyang/checkpoints/xl_g_line_iter-0270000"
+  - "/data4/liuyang/checkpoints/xl_g_line_s2_iter-0260000"
+
+# 评测任务配置
+tasks:
+  arc_challenge:
+    num_fewshot: 25
+    batch_size: 32
+    metric: "acc_norm"  # 使用归一化准确率
+  arc_easy:
+    num_fewshot: 25
+    batch_size: 32
+    metric: "acc_norm"  # 使用归一化准确率
+  piqa: 
+    num_fewshot: 0
+    batch_size: 32
+    metric: "acc_norm"  # 使用归一化准确率
+  hellaswag:
+    num_fewshot: 10
+    batch_size: 32
+    metric: "acc_norm"  # 使用归一化准确率
+  winogrande:
+    num_fewshot: 5
+    batch_size: 32
+    metric: "acc" # 使用准确率
+  bbh:
+    num_fewshot: 3
+    batch_size: 24
+    metric: "exact_match" # 精确匹配
+  mmlu:
+    num_fewshot: 5
+    batch_size: 16
+    metric: "acc"   # 使用准确率
+  gsm8k:
+    num_fewshot: 8
+    batch_size: 24
+    metric: "exact_match" # 精确匹配
+  minerva_math:
+    num_fewshot: 4
+    batch_size: 24
+    metric: "math_verify" # 精确匹配
+  humaneval:
+    num_fewshot: 0
+    batch_size: 24
+    metric: "pass@1" # 使用通过率
+  mbpp:
+    num_fewshot: 3
+    batch_size: 24
+    metric: "pass_at_1" # 使用通过率
+  cmmlu:
+    num_fewshot: 5
+    batch_size: 32
+    metric: "acc_norm" # 使用准确率
+  ceval-valid:
+    num_fewshot: 5
+    batch_size: 32
+    metric: "acc_norm"   # 使用准确率

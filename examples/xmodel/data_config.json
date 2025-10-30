@@ -1,0 +1,15 @@
+{
+  "ultrafineweb-en": 0.4100,
+  "ultrafineweb-zh": 0.2000,
+  "starcoder": 0.2600,
+  "books": 0.0100,
+  "algebraic": 0.0050,
+  "open-web-math-train": 0.0050,
+  "wiki": 0.0100,
+  "arxiv": 0.0133,
+  "stackexchange": 0.0090,
+  "reddit": 0.0391,
+  "pes2o": 0.0285,
+  "megawika": 0.0023,
+  "tulu_flan": 0.0078
+}

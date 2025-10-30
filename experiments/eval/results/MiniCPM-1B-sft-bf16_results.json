@@ -1,0 +1,10 @@
+{
+  "arc_challenge": 0.4531,
+  "arc_easy": 0.7521,
+  "ceval-valid": 0.4614,
+  "cmmlu": 0.4652,
+  "hellaswag": 0.679,
+  "mmlu": 0.4875,
+  "piqa": 0.7519,
+  "winogrande": 0.6448
+}
