@@ -26,11 +26,13 @@ python sft_to_jsonl.py
 ### 自定义参数
 
 ```bash
-python sft_to_jsonl.py \
-    --data_path /path/to/your/data.bin \
-    --tokenizer_path /path/to/tokenizer \
-    --output_path /path/to/output.jsonl \
-    --eos_token_id 2
+python data_preprocess/decay_stage/sft_to_jsonl.py \
+    --data_path /data2/wangqun/g_line_data/_SFT_mixed_v2_deduped_v4.bin \
+    --tokenizer_path tokenizers/xmodel/v11/xmodel_65280 \
+    --output_path sft_mixed_v2_deduped_v4.jsonl \
+    --eos_token_id 2 \
+    --use_parallel \
+    --num_processes 40
 ```
 
 ### 参数说明
