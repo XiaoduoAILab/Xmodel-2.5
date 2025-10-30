@@ -64,24 +64,26 @@ def decode_single_document(tokenizer_path, doc_tokens):
         print(f"Error decoding document: {e}")
         return ""
 
-def decode_documents_batch(tokenizer_path, documents_batch):
+def decode_documents_batch(tokenizer_path, batch_info):
     """
     解码一批文档（用于多进程处理）
     """
     try:
+        batch_id, documents_batch = batch_info
         # 在每个进程中加载tokenizer
         tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
         decoded_batch = []
         
-        for doc_tokens in documents_batch:
+        # 为当前进程创建独立的进度条
+        for doc_tokens in tqdm(documents_batch, desc=f"Process {batch_id}", leave=False):
             # 解码为文本，跳过特殊token
             decoded_text = tokenizer.decode(doc_tokens.tolist(), skip_special_tokens=True)
             decoded_batch.append(decoded_text)
         
         return decoded_batch
     except Exception as e:
-        print(f"Error decoding batch: {e}")
-        return [""] * len(documents_batch)
+        print(f"Error decoding batch {batch_info[0]}: {e}")
+        return [""] * len(batch_info[1])
 
 def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_processes=None):
     """
@@ -94,15 +96,16 @@ def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_proc
     
     print(f"Using {num_processes} processes for decoding {len(documents)} documents")
     
-    # 将文档分成多个批次
+    # 将文档分成多个批次，并添加批次ID
     batch_size = max(1, len(documents) // num_processes)
-    document_batches = []
+    document_batches_with_id = []
     
     for i in range(0, len(documents), batch_size):
         batch = documents[i:i + batch_size]
-        document_batches.append(batch)
+        batch_id = len(document_batches_with_id)  # 批次ID
+        document_batches_with_id.append((batch_id, batch))
     
-    print(f"Split into {len(document_batches)} batches, each with ~{batch_size} documents")
+    print(f"Split into {len(document_batches_with_id)} batches, each with ~{batch_size} documents")
     
     # 准备参数
     decode_func = partial(decode_documents_batch, tokenizer_path)
@@ -110,9 +113,9 @@ def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_proc
     # 使用多进程池处理批次
     with mp.Pool(processes=num_processes) as pool:
         batch_results = list(tqdm(
-            pool.imap(decode_func, document_batches),
-            total=len(document_batches),
-            desc="Decoding document batches"
+            pool.imap(decode_func, document_batches_with_id),
+            total=len(document_batches_with_id),
+            desc="Overall progress"
         ))
     
     # 合并所有批次的结果
