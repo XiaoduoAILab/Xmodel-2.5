@@ -64,6 +64,25 @@ def decode_single_document(tokenizer_path, doc_tokens):
         print(f"Error decoding document: {e}")
         return ""
 
+def decode_documents_batch(tokenizer_path, documents_batch):
+    """
+    解码一批文档（用于多进程处理）
+    """
+    try:
+        # 在每个进程中加载tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
+        decoded_batch = []
+        
+        for doc_tokens in documents_batch:
+            # 解码为文本，跳过特殊token
+            decoded_text = tokenizer.decode(doc_tokens.tolist(), skip_special_tokens=True)
+            decoded_batch.append(decoded_text)
+        
+        return decoded_batch
+    except Exception as e:
+        print(f"Error decoding batch: {e}")
+        return [""] * len(documents_batch)
+
 def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_processes=None):
     """
     使用多进程并行解码文档
@@ -73,20 +92,35 @@ def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_proc
     if num_processes is None:
         num_processes = min(mp.cpu_count(), len(documents))
     
-    print(f"Using {num_processes} processes for decoding")
+    print(f"Using {num_processes} processes for decoding {len(documents)} documents")
+    
+    # 将文档分成多个批次
+    batch_size = max(1, len(documents) // num_processes)
+    document_batches = []
+    
+    for i in range(0, len(documents), batch_size):
+        batch = documents[i:i + batch_size]
+        document_batches.append(batch)
+    
+    print(f"Split into {len(document_batches)} batches, each with ~{batch_size} documents")
     
     # 准备参数
-    decode_func = partial(decode_single_document, tokenizer_path)
+    decode_func = partial(decode_documents_batch, tokenizer_path)
     
-    # 使用多进程池
+    # 使用多进程池处理批次
     with mp.Pool(processes=num_processes) as pool:
-        results = list(tqdm(
-            pool.imap(decode_func, documents),
-            total=len(documents),
-            desc="Decoding documents"
+        batch_results = list(tqdm(
+            pool.imap(decode_func, document_batches),
+            total=len(document_batches),
+            desc="Decoding document batches"
         ))
     
-    return results
+    # 合并所有批次的结果
+    all_results = []
+    for batch_result in batch_results:
+        all_results.extend(batch_result)
+    
+    return all_results
 
 def decode_documents_with_tokenizer(tokenizer, documents):
     """
