@@ -5,6 +5,8 @@ import sys
 import numpy as np
 from tqdm import tqdm
 from transformers import AutoTokenizer
+import multiprocessing as mp
+from functools import partial
 
 def load_binary_data(file_path):
     """
@@ -48,11 +50,49 @@ def split_documents_by_eos(token_ids, eos_token_id=2):
     print(f"Split into {len(documents)} documents")
     return documents
 
+def decode_single_document(tokenizer_path, doc_tokens):
+    """
+    解码单个文档（用于多进程处理）
+    """
+    try:
+        # 在每个进程中加载tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
+        # 解码为文本，跳过特殊token
+        decoded_text = tokenizer.decode(doc_tokens.tolist(), skip_special_tokens=True)
+        return decoded_text
+    except Exception as e:
+        print(f"Error decoding document: {e}")
+        return ""
+
+def decode_documents_with_tokenizer_parallel(tokenizer_path, documents, num_processes=None):
+    """
+    使用多进程并行解码文档
+    """
+    print("Decoding documents with tokenizer (parallel)...")
+    
+    if num_processes is None:
+        num_processes = min(mp.cpu_count(), len(documents))
+    
+    print(f"Using {num_processes} processes for decoding")
+    
+    # 准备参数
+    decode_func = partial(decode_single_document, tokenizer_path)
+    
+    # 使用多进程池
+    with mp.Pool(processes=num_processes) as pool:
+        results = list(tqdm(
+            pool.imap(decode_func, documents),
+            total=len(documents),
+            desc="Decoding documents"
+        ))
+    
+    return results
+
 def decode_documents_with_tokenizer(tokenizer, documents):
     """
-    使用tokenizer解码文档
+    使用tokenizer解码文档（单进程版本，向后兼容）
     """
-    print("Decoding documents with tokenizer...")
+    print("Decoding documents with tokenizer (single process)...")
     
     decoded_documents = []
     
@@ -136,6 +176,13 @@ def main():
                        default=2,
                        help='EOS token ID used to separate documents')
     
+    parser.add_argument('--num_processes', type=int,
+                       default=None,
+                       help='Number of processes for parallel decoding (default: CPU count)')
+    
+    parser.add_argument('--use_parallel', action='store_true',
+                       help='Use parallel processing for decoding (recommended for large datasets)')
+    
     args = parser.parse_args()
     
     # 检查输出目录是否存在，不存在则创建
@@ -144,11 +191,6 @@ def main():
         os.makedirs(output_dir, exist_ok=True)
     
     try:
-        # 加载tokenizer
-        print(f"Loading tokenizer from: {args.tokenizer_path}")
-        tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_path, trust_remote_code=True)
-        print("Tokenizer loaded successfully")
-        
         # 加载二进制数据
         print(f"Loading binary data from: {args.data_path}")
         token_ids = load_binary_data(args.data_path)
@@ -157,7 +199,20 @@ def main():
         documents_tokens = split_documents_by_eos(token_ids, args.eos_token_id)
         
         # 解码文档
-        documents = decode_documents_with_tokenizer(tokenizer, documents_tokens)
+        if args.use_parallel:
+            print("Using parallel decoding...")
+            documents = decode_documents_with_tokenizer_parallel(
+                args.tokenizer_path, 
+                documents_tokens, 
+                args.num_processes
+            )
+        else:
+            print("Using single process decoding...")
+            # 加载tokenizer
+            print(f"Loading tokenizer from: {args.tokenizer_path}")
+            tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_path, trust_remote_code=True)
+            print("Tokenizer loaded successfully")
+            documents = decode_documents_with_tokenizer(tokenizer, documents_tokens)
         
         # 过滤空文档
         non_empty_documents = [doc for doc in documents if doc.strip()]

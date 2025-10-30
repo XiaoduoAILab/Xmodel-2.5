@@ -39,6 +39,8 @@ python sft_to_jsonl.py \
 - `--tokenizer_path`: tokenizer 目录路径
 - `--output_path`: 输出的 JSONL 文件路径
 - `--eos_token_id`: 用于分割文档的 EOS token ID（默认：2）
+- `--use_parallel`: 使用并行处理加速解码（推荐用于大数据集）
+- `--num_processes`: 并行解码的进程数（默认：CPU核心数）
 
 ## 文件格式
 
