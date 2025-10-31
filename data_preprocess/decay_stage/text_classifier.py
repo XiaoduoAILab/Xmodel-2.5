@@ -77,7 +77,7 @@ class TextClassifier:
                 response = requests.post(
                     f"{self.base_url}/v1/chat/completions",
                     json={
-                        "model": "qwen3-4b",
+                        "model": "Qwen3-4B",
                         "messages": [
                             {"role": "user", "content": prompt}
                         ],
