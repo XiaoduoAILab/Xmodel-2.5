@@ -32,27 +32,26 @@ class TextClassifier:
         prompt = """请对以下文本进行分类，按照两个维度：
 
 1. 主题分类（三选一）：
-   - 代码（code）：包含编程代码、算法实现、技术文档等
-   - 数学（math）：包含数学公式、定理证明、数学问题等
-   - 知识（knowledge）：包含百科知识、科学原理、历史人文等
+   - 1: 代码（包含编程代码、算法实现、技术文档等）
+   - 2: 数学（包含数学公式、定理证明、数学问题等）
+   - 3: 知识（包含百科知识、科学原理、历史人文等）
 
-2. 质量评分（1-5分）：
-   - 5分：内容完整、逻辑清晰、表达准确、信息丰富
-   - 4分：内容较完整、逻辑较清晰、表达较准确
-   - 3分：内容基本完整、逻辑基本清晰、表达基本准确
-   - 2分：内容不完整、逻辑混乱、表达不准确
-   - 1分：内容严重缺失、逻辑严重混乱、表达严重不准确
+2. 质量评分（1-5分，请严格评分）：
+   - 5: 高质量内容：逻辑严谨、表达精准、信息丰富、结构清晰、有深度见解
+   - 4: 良好内容：逻辑清晰、表达准确、信息较丰富、结构合理
+   - 3: 中等内容：逻辑基本清晰、表达基本准确、信息基本完整
+   - 2: 较差内容：逻辑混乱、表达不准确、信息不完整、有明显错误
+   - 1: 低质量内容：逻辑严重混乱、表达严重不准确、信息严重缺失、大量错误
 
-请严格按照以下JSON格式输出结果：
-{
-    "topic": "code|math|knowledge",
-    "quality": 1|2|3|4|5
-}
+请严格评分，只有真正高质量的内容才能给5分，大多数内容应该在2-4分之间。
+
+请只输出两个连续的数字，格式为：主题编号质量评分
+例如：15 或 23 或 34
 
 文本内容：
 {text}
 
-/no_think"""
+分类结果："""
         return prompt
     
     def classify_text(self, text, max_retries=3):
@@ -77,12 +76,12 @@ class TextClassifier:
                 response = requests.post(
                     f"{self.base_url}/v1/chat/completions",
                     json={
-                        "model": "Qwen3-4B-Instruct-2507",
+                        "model": "qwen3-4b",
                         "messages": [
                             {"role": "user", "content": prompt}
                         ],
                         "temperature": 0.1,
-                        "max_tokens": 100,
+                        "max_tokens": 2,  # 只输出两个数字
                         "reasoning": False  # 关闭think mode
                     },
                     timeout=30
@@ -92,35 +91,28 @@ class TextClassifier:
                     result = response.json()
                     content = result["choices"][0]["message"]["content"].strip()
                     
-                    # 尝试解析JSON结果
+                    # 解析数字格式：主题编号质量评分（两个连续数字）
                     try:
-                        # 提取JSON部分
-                        if "{" in content and "}" in content:
-                            json_start = content.find("{")
-                            json_end = content.rfind("}") + 1
-                            json_str = content[json_start:json_end]
-                            classification = json.loads(json_str)
+                        # 提取连续的两个数字
+                        content = content.strip()
+                        if len(content) >= 2:
+                            topic_num = int(content[0])
+                            quality_num = int(content[1])
                             
-                            # 验证结果格式
-                            if "topic" in classification and "quality" in classification:
-                                topic = classification["topic"]
-                                quality = classification["quality"]
-                                
-                                # 验证topic值
-                                if topic not in ["code", "math", "knowledge"]:
-                                    logger.warning(f"Invalid topic: {topic}, defaulting to 'knowledge'")
-                                    classification["topic"] = "knowledge"
-                                
-                                # 验证quality值
-                                if quality not in [1, 2, 3, 4, 5]:
-                                    logger.warning(f"Invalid quality: {quality}, defaulting to 3")
-                                    classification["quality"] = 3
-                                
-                                return classification
-                    except json.JSONDecodeError:
-                        logger.warning(f"Failed to parse JSON from response: {content}")
+                            # 映射主题编号到字符串
+                            topic_map = {1: "code", 2: "math", 3: "knowledge"}
+                            topic = topic_map.get(topic_num, "knowledge")
+                            
+                            # 验证质量评分
+                            if quality_num not in [1, 2, 3, 4, 5]:
+                                logger.warning(f"Invalid quality: {quality_num}, defaulting to 3")
+                                quality_num = 3
+                            
+                            return {"topic": topic, "quality": quality_num}
+                    except (ValueError, IndexError):
+                        logger.warning(f"Failed to parse numbers from response: {content}")
                     
-                    # 如果JSON解析失败，尝试从文本中提取
+                    # 如果数字解析失败，尝试从文本中提取
                     return self._parse_classification_from_text(content)
                 
                 else:
