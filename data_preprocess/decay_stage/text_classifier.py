@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class TextClassifier:
-    def __init__(self, base_url="http://localhost:8001"):
+    def __init__(self, base_url="http://localhost:8000"):
         """
         初始化文本分类器
         
@@ -183,14 +183,21 @@ def load_jsonl_data(file_path):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"JSONL file not found: {file_path}")
     
-    # 先快速统计文件总行数
+    # 使用系统命令快速统计文件总行数（Ubuntu下最快的方法）
     logger.info("Counting total lines in JSONL file...")
-    total_lines = 0
-    with open(file_path, 'r', encoding='utf-8') as f:
-        for _ in tqdm(f, desc="Counting lines"):
-            total_lines += 1
-    
-    logger.info(f"Total lines in file: {total_lines}")
+    try:
+        import subprocess
+        result = subprocess.run(['wc', '-l', file_path], capture_output=True, text=True, check=True)
+        total_lines = int(result.stdout.strip().split()[0])
+        logger.info(f"Total lines in file: {total_lines}")
+    except (subprocess.SubprocessError, ValueError, IndexError):
+        # 如果系统命令失败，回退到Python方法
+        logger.warning("Failed to use wc command, falling back to Python counting...")
+        total_lines = 0
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for _ in tqdm(f, desc="Counting lines"):
+                total_lines += 1
+        logger.info(f"Total lines in file: {total_lines}")
     
     # 加载数据并显示进度
     data = []
@@ -216,7 +223,7 @@ def classify_batch(batch_info):
         list: 分类结果列表
     """
     batch_id, data_batch, port_offset = batch_info
-    port = 8001 + port_offset
+    port = 8000 + port_offset
     
     logger.info(f"Process {batch_id} started, using port {port}")
     classifier = TextClassifier(base_url=f"http://localhost:{port}")
