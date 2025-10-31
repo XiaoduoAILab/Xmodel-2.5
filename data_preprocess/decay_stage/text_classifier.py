@@ -52,7 +52,7 @@ class TextClassifier:
 文本内容：
 {text}
 
-分类结果："""
+/no_think"""
         return prompt
     
     def classify_text(self, text, max_retries=3):
