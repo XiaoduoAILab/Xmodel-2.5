@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class TextClassifier:
-    def __init__(self, base_url="http://localhost:8000"):
+    def __init__(self, base_url="http://localhost:8001"):
         """
         初始化文本分类器
         
@@ -206,7 +206,7 @@ def classify_batch(batch_info):
         list: 分类结果列表
     """
     batch_id, data_batch, port_offset = batch_info
-    port = 8000 + port_offset
+    port = 8001 + port_offset
     
     logger.info(f"Process {batch_id} started, using port {port}")
     classifier = TextClassifier(base_url=f"http://localhost:{port}")
