@@ -183,16 +183,26 @@ def load_jsonl_data(file_path):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"JSONL file not found: {file_path}")
     
+    # 先快速统计文件总行数
+    logger.info("Counting total lines in JSONL file...")
+    total_lines = 0
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for _ in tqdm(f, desc="Counting lines"):
+            total_lines += 1
+    
+    logger.info(f"Total lines in file: {total_lines}")
+    
+    # 加载数据并显示进度
     data = []
     with open(file_path, 'r', encoding='utf-8') as f:
-        for line_num, line in enumerate(f, 1):
+        for line_num, line in enumerate(tqdm(f, total=total_lines, desc="Loading JSONL"), 1):
             try:
                 item = json.loads(line.strip())
                 data.append(item)
             except json.JSONDecodeError as e:
                 logger.warning(f"Error parsing line {line_num}: {e}")
     
-    logger.info(f"Loaded {len(data)} items from JSONL file")
+    logger.info(f"Successfully loaded {len(data)} items from JSONL file")
     return data
 
 def classify_batch(batch_info):
