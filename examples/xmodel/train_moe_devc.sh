@@ -12,7 +12,7 @@ NUM_NODES=1
 NODE_RANK=0
 WORLD_SIZE=$(($GPUS_PER_NODE*$NUM_NODES))
 
-CHECKPOINT_PATH=out/deepseekv3_20m_exact
+CHECKPOINT_PATH=out/mup_convert_debug
 TENSORBOARD_LOGS_PATH=runs/mup_convert_debug
 TOKENIZER_MODEL=tokenizers/deepseekv3
 DATA_PATH=/datasets/batch1_content_document
@@ -28,25 +28,25 @@ DISTRIBUTED_ARGS=(
 GPT_MODEL_ARGS=(
     --use-mcore-models
 
-    # 主干 - 大幅减小规模以达到20M总参数
-    --num-layers            6           # 进一步减少层数
-    --hidden-size           384         # 大幅减小隐藏维度
-    --ffn-hidden-size       1152        # 大幅减小FFN内维
-    --num-attention-heads   6           # 减少注意力头数
-    --seq-length            1024        # 减小序列长度
-    --max-position-embeddings 1024
+    # 主干 - 大幅减小规模以达到262M总参数
+    --num-layers            8           # 减少层数
+    --hidden-size           512         # 减小隐藏维度
+    --ffn-hidden-size       1536        # 减小FFN内维
+    --num-attention-heads   8           # 减少注意力头数
+    --seq-length            2048        # 减小序列长度以控制激活
+    --max-position-embeddings 2048
 
-    # MLA - 大幅减小LoRA秩
+    # MLA - 相应调整LoRA秩
     --multi-latent-attention
-    --q-lora-rank           64
-    --kv-lora-rank          48
+    --q-lora-rank           128
+    --kv-lora-rank          96
     --qk-head-dim           64
     --v-head-dim            64
 
     # RoPE
     --position-embedding-type rope
     --rotary-base           10000
-    --rotary-scaling-factor 10
+    --rotary-scaling-factor 20
     --rotary-percent        1.0
 
     # 正则化 / 激活
@@ -61,7 +61,7 @@ GPT_MODEL_ARGS=(
     --use-flash-attn
 
     # MoE - 减少专家数量
-    --num-experts           8           # 减少专家数
+    --num-experts           12          # 减少专家数
     --moe-router-topk       2           # 减少top-k
     --moe-aux-loss-coeff    0.01
     --moe-expert-capacity-factor 0.8    # 降低容量因子
@@ -69,15 +69,15 @@ GPT_MODEL_ARGS=(
     --moe-router-pre-softmax
 
     # MTP-3
-    --mtp-num-layers 2                  # 减少预测层数
+    --mtp-num-layers 3                  # 减少预测层数
     --mtp-loss-scaling-factor 0.05      # 调整损失缩放
 )
 
 # ---------- 训练 ----------
 TRAINING_ARGS=(
-    --micro-batch-size 16
+    --micro-batch-size 8
     --global-batch-size 32
-    --train-iters 10000
+    --train-iters 200000
     --weight-decay 0.1
     --adam-beta1 0.9
     --adam-beta2 0.95
