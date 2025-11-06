@@ -31,7 +31,7 @@ GPT_MODEL_ARGS=(
     # 主干 - 大幅减小规模以达到20M总参数
     --num-layers            6           # 进一步减少层数
     --hidden-size           256         # 大幅减小隐藏维度
-    --ffn-hidden-size       1024        # 大幅减小FFN内维
+    --ffn-hidden-size       512         # 大幅减小FFN内维
     --num-attention-heads   4           # 减少注意力头数
     --seq-length            1024        # 减小序列长度
     --max-position-embeddings 1024
@@ -75,7 +75,7 @@ GPT_MODEL_ARGS=(
 
 # ---------- 训练 ----------
 TRAINING_ARGS=(
-    --micro-batch-size 16
+    --micro-batch-size 32
     --global-batch-size 32
     --train-iters 200000
     --weight-decay 0.1
