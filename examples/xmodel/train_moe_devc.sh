@@ -32,7 +32,7 @@ GPT_MODEL_ARGS=(
     --num-layers            6           # 进一步减少层数
     --hidden-size           256         # 大幅减小隐藏维度
     --ffn-hidden-size       1024        # 大幅减小FFN内维
-    --num-attention-heads   6           # 减少注意力头数
+    --num-attention-heads   4           # 减少注意力头数
     --seq-length            1024        # 减小序列长度
     --max-position-embeddings 1024
 
