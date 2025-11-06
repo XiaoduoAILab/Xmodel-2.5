@@ -12,7 +12,7 @@ NUM_NODES=1
 NODE_RANK=0
 WORLD_SIZE=$(($GPUS_PER_NODE*$NUM_NODES))
 
-CHECKPOINT_PATH=out/mup_convert_debug
+CHECKPOINT_PATH=out/deepseekv3_20m_exact
 TENSORBOARD_LOGS_PATH=runs/mup_convert_debug
 TOKENIZER_MODEL=tokenizers/deepseekv3
 DATA_PATH=/datasets/batch1_content_document
