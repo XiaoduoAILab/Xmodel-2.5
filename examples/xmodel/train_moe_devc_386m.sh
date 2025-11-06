@@ -29,14 +29,14 @@ GPT_MODEL_ARGS=(
     --use-mcore-models
 
     # 主干 - 大幅减小规模以达到262M总参数
-    --num-layers            8           # 减少层数
-    --hidden-size           512         # 减小隐藏维度
-    --ffn-hidden-size       1536        # 减小FFN内维
-    --num-attention-heads   8           # 减少注意力头数
-    --seq-length            2048        # 减小序列长度以控制激活
+    --num-layers            8           # 层数
+    --hidden-size           512         # 隐藏维度
+    --ffn-hidden-size       1536        # FFN内维
+    --num-attention-heads   8           # 注意力头数
+    --seq-length            2048        # 序列长度
     --max-position-embeddings 2048
 
-    # MLA - 相应调整LoRA秩
+    # MLA - LoRA秩
     --multi-latent-attention
     --q-lora-rank           128
     --kv-lora-rank          96
@@ -61,16 +61,16 @@ GPT_MODEL_ARGS=(
     --use-flash-attn
 
     # MoE - 减少专家数量
-    --num-experts           12          # 减少专家数
-    --moe-router-topk       2           # 减少top-k
+    --num-experts           12          # 专家数
+    --moe-router-topk       2           # top-k
     --moe-aux-loss-coeff    0.01
-    --moe-expert-capacity-factor 0.8    # 降低容量因子
+    --moe-expert-capacity-factor 0.8    # 容量因子
     --moe-token-dispatcher-type alltoall
     --moe-router-pre-softmax
 
     # MTP-3
-    --mtp-num-layers 3                  # 减少预测层数
-    --mtp-loss-scaling-factor 0.05      # 调整损失缩放
+    --mtp-num-layers 3                  # 预测层数
+    --mtp-loss-scaling-factor 0.05      # 损失缩放
 )
 
 # ---------- 训练 ----------
