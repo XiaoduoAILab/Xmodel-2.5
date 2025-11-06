@@ -29,24 +29,24 @@ GPT_MODEL_ARGS=(
     --use-mcore-models
 
     # 主干 - 大幅减小规模以达到20M总参数
-    --num-layers            8           # 减少层数
-    --hidden-size           512         # 减小隐藏维度
-    --ffn-hidden-size       1536        # 减小FFN内维
-    --num-attention-heads   8           # 减少注意力头数
-    --seq-length            2048        # 减小序列长度以控制激活
-    --max-position-embeddings 2048
+    --num-layers            6           # 进一步减少层数
+    --hidden-size           384         # 大幅减小隐藏维度
+    --ffn-hidden-size       1152        # 大幅减小FFN内维
+    --num-attention-heads   6           # 减少注意力头数
+    --seq-length            1024        # 减小序列长度
+    --max-position-embeddings 1024
 
-    # MLA - 相应调整LoRA秩
+    # MLA - 大幅减小LoRA秩
     --multi-latent-attention
-    --q-lora-rank           128
-    --kv-lora-rank          96
+    --q-lora-rank           64
+    --kv-lora-rank          48
     --qk-head-dim           64
     --v-head-dim            64
 
     # RoPE
     --position-embedding-type rope
     --rotary-base           10000
-    --rotary-scaling-factor 20
+    --rotary-scaling-factor 10
     --rotary-percent        1.0
 
     # 正则化 / 激活
