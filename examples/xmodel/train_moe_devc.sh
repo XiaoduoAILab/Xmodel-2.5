@@ -12,7 +12,7 @@ NUM_NODES=1
 NODE_RANK=0
 WORLD_SIZE=$(($GPUS_PER_NODE*$NUM_NODES))
 
-CHECKPOINT_PATH=out/deepseekv3_40m_exact
+CHECKPOINT_PATH=out/deepseekv3_60m_exact
 TENSORBOARD_LOGS_PATH=runs/mup_convert_debug
 TOKENIZER_MODEL=tokenizers/deepseekv3
 DATA_PATH=/datasets/batch1_content_document
@@ -28,7 +28,7 @@ DISTRIBUTED_ARGS=(
 GPT_MODEL_ARGS=(
     --use-mcore-models
 
-    # 主干 - 大幅减小规模以达到20M总参数
+    # 主干 - 大幅减小规模以达到60M总参数
     --num-layers            6           # 进一步减少层数
     --hidden-size           256         # 大幅减小隐藏维度
     --ffn-hidden-size       512         # 大幅减小FFN内维
