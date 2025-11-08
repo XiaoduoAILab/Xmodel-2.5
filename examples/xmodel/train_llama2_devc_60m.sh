@@ -50,9 +50,6 @@ GPT_MODEL_ARGS=(
     --no-rope-fusion
     --attention-backend     fused
     --use-flash-attn
-
-    # ---------- 关键：共享权重 ----------
-    --tie-word-embeddings   # 省掉 33 M，正好命中 67.6 M
 )
 
 # ---------- 训练 ----------
