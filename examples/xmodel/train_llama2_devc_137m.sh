@@ -29,7 +29,7 @@ GPT_MODEL_ARGS=(
     # ---------- Llama-2 主干 ----------
     --num-layers            8
     --hidden-size           640
-    --ffn-hidden-size       1920
+    --ffn-hidden-size       1600
     --num-attention-heads   16
     --seq-length            2048
     --max-position-embeddings 2048
