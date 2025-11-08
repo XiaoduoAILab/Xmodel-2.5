@@ -27,10 +27,10 @@ GPT_MODEL_ARGS=(
     --use-mcore-models
 
     # ---------- Llama-2 主干 ----------
-    --num-layers            24          # 24 层
-    --hidden-size           256         # 隐藏维
-    --ffn-hidden-size       768         # SwiGLU 中间维 (3×hidden)
-    --num-attention-heads   16          # 16 头 MHA
+    --num-layers            18
+    --hidden-size           384
+    --ffn-hidden-size       1152
+    --num-attention-heads   16
     --seq-length            2048
     --max-position-embeddings 2048
 
