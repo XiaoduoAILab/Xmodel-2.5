@@ -11,8 +11,8 @@ NUM_NODES=1
 NODE_RANK=0
 WORLD_SIZE=$(($GPUS_PER_NODE*$NUM_NODES))
 
-CHECKPOINT_PATH=out/llama2_67m
-TENSORBOARD_LOGS_PATH=runs/llama2_67m
+CHECKPOINT_PATH=out/llama2_137m
+TENSORBOARD_LOGS_PATH=runs/llama2_137m
 TOKENIZER_MODEL=tokenizers/deepseekv3    # tokenizer 不动
 DATA_PATH=/datasets/batch1_content_document
 
