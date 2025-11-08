@@ -27,7 +27,7 @@ GPT_MODEL_ARGS=(
     --use-mcore-models
 
     # ---------- Llama-2 主干 ----------
-    --num-layers            12
+    --num-layers            10
     --hidden-size           384
     --ffn-hidden-size       1152
     --num-attention-heads   16
