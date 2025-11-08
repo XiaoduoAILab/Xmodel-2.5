@@ -27,9 +27,9 @@ GPT_MODEL_ARGS=(
     --use-mcore-models
 
     # ---------- Llama-2 主干 ----------
-    --num-layers            20          # 20 层
-    --hidden-size           384         # 隐藏维
-    --ffn-hidden-size       1152        # SwiGLU 中间维 (≈3×hidden)
+    --num-layers            24          # 24 层
+    --hidden-size           256         # 隐藏维
+    --ffn-hidden-size       768         # SwiGLU 中间维 (3×hidden)
     --num-attention-heads   16          # 16 头 MHA
     --seq-length            2048
     --max-position-embeddings 2048
@@ -43,10 +43,9 @@ GPT_MODEL_ARGS=(
     # ---------- 正则化 / 激活 ----------
     --normalization         RMSNorm
     --swiglu
-    --init-method-std       0.02        # llama2 默认初始化
+    --init-method-std       0.02
     --attention-dropout     0.0
     --hidden-dropout        0.0
-
     --disable-bias-linear
     --no-rope-fusion
     --attention-backend     fused
