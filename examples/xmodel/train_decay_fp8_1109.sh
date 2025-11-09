@@ -77,16 +77,17 @@ GPT_MODEL_ARGS=(
 TRAINING_ARGS=(
     --micro-batch-size 5
     --global-batch-size 960
-    --train-iters 555000
+    --train-iters 550000
     --weight-decay 0.1
     --adam-beta1 0.9
     --adam-beta2 0.95
     --clip-grad 1.0
     --lr 0.0016666666666666668   # decoupled-lr/(hidden_size/256)
     --decoupled-lr 0.01
-    --lr-decay-style WSD
-    --lr-wsd-decay-style exponential
-    --lr-wsd-decay-iters 25000
+    --lr-decay-style cosine
+    --min-lr 0.00010416666666666667  # decoupled-min-lr/(hidden_size/256)
+    --decoupled-min-lr 0.000625
+    --lr-decay-iters 20000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
