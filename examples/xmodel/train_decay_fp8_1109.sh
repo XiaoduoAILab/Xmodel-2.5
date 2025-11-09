@@ -77,7 +77,7 @@ GPT_MODEL_ARGS=(
 TRAINING_ARGS=(
     --micro-batch-size 5
     --global-batch-size 960
-    --train-iters 550000
+    --train-iters 555000
     --weight-decay 0.1
     --adam-beta1 0.9
     --adam-beta2 0.95
@@ -86,7 +86,7 @@ TRAINING_ARGS=(
     --decoupled-lr 0.01
     --lr-decay-style WSD
     --lr-wsd-decay-style exponential
-    --lr-wsd-decay-iters 20000
+    --lr-wsd-decay-iters 25000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
@@ -120,8 +120,8 @@ DATA_ARGS=(
 
 EVAL_AND_LOGGING_ARGS=(
     --log-interval 10
-    --eval-interval 2000
-    --save-interval 2000
+    --eval-interval 1000
+    --save-interval 1000
     --log-params-norm
     --log-throughput
     --ckpt-format torch
