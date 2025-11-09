@@ -84,10 +84,12 @@ TRAINING_ARGS=(
     --clip-grad 1.0
     --lr 0.0016666666666666668   # decoupled-lr/(hidden_size/256)
     --decoupled-lr 0.01
-    --lr-decay-style cosine
+    --lr-decay-style WSD
+    --lr-wsd-decay-style exponential
     --min-lr 0.00010416666666666667  # decoupled-min-lr/(hidden_size/256)
     --decoupled-min-lr 0.000625
     --lr-decay-iters 20000
+    --lr-wsd-decay-iters 20000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
