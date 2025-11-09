@@ -122,7 +122,7 @@ DATA_ARGS=(
 )
 
 EVAL_AND_LOGGING_ARGS=(
-    --log-interval 10
+    --log-interval 1
     --eval-interval 1000
     --save-interval 1000
     --log-params-norm
