@@ -94,6 +94,8 @@ TRAINING_ARGS=(
     --cross-entropy-loss-fusion
     --no-decay-norm-bias
     --no-load-optim
+    --optimizer muon
+    --muon-matched-adamw-rms 0.2
 )
 
 # Distributed Data Parallel (DDP) arguments
