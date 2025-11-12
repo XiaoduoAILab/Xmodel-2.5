@@ -85,7 +85,7 @@ TRAINING_ARGS=(
     --lr 1.66667e-03   # decoupled-lr/(hidden_size/256)
     --decoupled-lr 1e-2
     --lr-decay-style WSD
-    --lr-wsd-decay-style inverse-square-root
+    --lr-wsd-decay-style exponential
     --min-lr 1.66667e-05  # decoupled-min-lr/(hidden_size/256)
     --decoupled-min-lr 1e-4
     --lr-wsd-decay-iters 20000
@@ -94,8 +94,6 @@ TRAINING_ARGS=(
     --cross-entropy-loss-fusion
     --no-decay-norm-bias
     --no-load-optim
-    --optimizer muon
-    --muon-matched-adamw-rms 0.2
 )
 
 # Distributed Data Parallel (DDP) arguments
