@@ -38,15 +38,6 @@ DATA_PATH="0.18725 /data1/i_line_data/ultrafineweb-en_content_document \
            0.01801 /data1/i_line_data/dolma_wo_cc/megawika_text_document \
            0.66870 /data1/i_line_data/sft_mixed_v2_deduped_v4_text-document"
 
-DATA_PATH_LONG128K="0.25 /data1/i_line_data/ultrafineweb-en_content_document \
-                    0.05 /data1/i_line_data/ultrafineweb-zh_content_document \
-                    0.20 /data1/i_line_data/dolma_wo_cc/starcoder_text_document \
-                    0.05 /data1/i_line_data/dolma_wo_cc/books_text_document \
-                    0.05 /data1/i_line_data/dolma_wo_cc/algebraic-stack-train_text_document \
-                    0.05 /data1/i_line_data/dolma_wo_cc/open-web-math-train_text_document \
-                    0.05 /data1/i_line_data/dolma_wo_cc/wiki_text_document \
-                    0.30 /data1/i_line_data/sft_mixed_v2_deduped_v4_text-document"
-
 
 DISTRIBUTED_ARGS=(
     --nproc_per_node $GPUS_PER_NODE
@@ -64,7 +55,7 @@ GPT_MODEL_ARGS=(
     --num-query-groups 8
     --ffn-hidden-size 3840
     --position-embedding-type rope
-    --seq-length 32768          # <— 32 k
+    --seq-length 3776
     --max-position-embeddings 131072
     --rotary-base 500000
     --rotary-percent 1.0
@@ -81,24 +72,24 @@ GPT_MODEL_ARGS=(
     --mup-output-scale 1.0
     --mup-attention-residual-scale 1.4
     --mup-ffn-residual-scale 1.4
-    --sequence-parallel          # <— 打开序列并行
-    --recompute-activations      # <— 激活 checkpoint
 )
 
 TRAINING_ARGS=(
-    --micro-batch-size 1
-    --global-batch-size 32
-    --train-iters 555000
+    --micro-batch-size 5
+    --global-batch-size 960
+    --train-iters 570000
     --weight-decay 0.1
     --adam-beta1 0.9
     --adam-beta2 0.95
     --clip-grad 1.0
     --lr 1.0e-4
     --decoupled-lr 6.25e-4
-    --lr-decay-style cosine
+    --lr-decay-style WSD
+    --lr-wsd-decay-style exponential
     --min-lr 1.0e-5
     --decoupled-min-lr 6.25e-5
-    --lr-decay-iters 5000
+    --lr-decay-iters 20000
+    --lr-wsd-decay-iters 20000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
@@ -124,12 +115,12 @@ MODEL_PARALLEL_ARGS=(
 )
 
 DATA_ARGS=(
-    --data-path $DATA_PATH_LONG128K
+    --data-path $DATA_PATH
     --split 949,50,1
     --tokenizer-model $TOKENIZER_MODEL
     --tokenizer-type HuggingFaceTokenizer
     --vocab-size 129280
-    --num-workers 2
+    --num-workers 8
 )
 
 EVAL_AND_LOGGING_ARGS=(
