@@ -129,7 +129,7 @@ DATA_ARGS=(
     --tokenizer-model $TOKENIZER_MODEL
     --tokenizer-type HuggingFaceTokenizer
     --vocab-size 129280
-    --num-workers 8
+    --num-workers 2
 )
 
 EVAL_AND_LOGGING_ARGS=(
