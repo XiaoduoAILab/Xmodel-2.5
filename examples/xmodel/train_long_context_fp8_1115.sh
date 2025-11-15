@@ -124,7 +124,7 @@ MODEL_PARALLEL_ARGS=(
 )
 
 DATA_ARGS=(
-    --data-path $DATA_PATH_LONG128K
+    --data-path $DATA_PATH
     --split 949,50,1
     --tokenizer-model $TOKENIZER_MODEL
     --tokenizer-type HuggingFaceTokenizer
