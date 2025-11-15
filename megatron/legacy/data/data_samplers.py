@@ -67,9 +67,12 @@ class MegatronPretrainingSampler:
         # Sanity checks.
         assert self.total_samples > 0, \
             'no sample to consume: {}'.format(self.total_samples)
-        assert self.consumed_samples < self.total_samples, \
-            'no samples left to consume: {}, {}'.format(self.consumed_samples,
-                                                        self.total_samples)
+        # assert self.consumed_samples < self.total_samples, \
+        #     'no samples left to consume: {}, {}'.format(self.consumed_samples,
+        #                                                 self.total_samples)
+        if self.consumed_samples >= self.total_samples:
+            print(f"Info: Data exhausted, resetting consumed_samples from {self.consumed_samples} to 0")
+            self.consumed_samples = 0  # 重置计数器，重新开始epoch
         assert self.micro_batch_size > 0
         assert data_parallel_size > 0
         assert self.data_parallel_rank < data_parallel_size, \
