@@ -23,8 +23,8 @@ NUM_NODES=1
 NODE_RANK=0
 WORLD_SIZE=$(($GPUS_PER_NODE*$NUM_NODES))
 
-CHECKPOINT_PATH=out/i_line_s1_fp8_1113
-TENSORBOARD_LOGS_PATH=runs/i_line_s1_fp8_1113
+CHECKPOINT_PATH=out/i_line_s1_fp8_1116
+TENSORBOARD_LOGS_PATH=runs/i_line_s1_fp8_1116
 TOKENIZER_MODEL=tokenizers/deepseekv3
 DATA_PATH="0.18725 /data1/i_line_data/ultrafineweb-en_content_document \
            0.03716 /data1/i_line_data/ultrafineweb-zh_content_document \
@@ -88,8 +88,8 @@ TRAINING_ARGS=(
     --lr-wsd-decay-style exponential
     --min-lr 1.0e-5
     --decoupled-min-lr 6.25e-5
-    --lr-decay-iters 40000
-    --lr-wsd-decay-iters 40000
+    --lr-decay-iters 20000
+    --lr-wsd-decay-iters 20000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
