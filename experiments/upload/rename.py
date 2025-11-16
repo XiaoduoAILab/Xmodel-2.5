@@ -1,7 +1,7 @@
 import os
 import shutil
 
-src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/"
+src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921-hf/"
 dst_folder = "/data2/liuyang/Xmodel-2.5-history/"
 
 for sub in os.listdir(src_folder):
