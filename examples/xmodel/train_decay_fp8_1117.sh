@@ -86,8 +86,8 @@ TRAINING_ARGS=(
     --decoupled-lr 1e-2
     --lr-decay-style WSD
     --lr-wsd-decay-style exponential
-    --min-lr 1.0e-6
-    --decoupled-min-lr 1e-6
+    --min-lr 1.041667e-4  # decoupled-min-lr/(hidden_size/256)
+    --decoupled-min-lr 6.25e-4
     --lr-decay-iters 40000
     --lr-wsd-decay-iters 40000
     --lr-warmup-iters 0
