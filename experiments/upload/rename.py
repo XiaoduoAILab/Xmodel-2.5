@@ -5,7 +5,7 @@ src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/"
 dst_folder = "/data2/liuyang/Xmodel-2.5-history/"
 
 for sub in os.listdir(src_folder):
-    iter_num = sub.split("-")[1]
+    iter_num = sub.split("_")[1]
     sub_path = os.path.join(src_folder, sub)
     # print(sub_path)
     src_path = os.path.join(sub_path, "pytorch_model.bin")
