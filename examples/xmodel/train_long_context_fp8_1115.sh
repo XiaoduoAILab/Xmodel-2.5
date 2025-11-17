@@ -103,7 +103,7 @@ TRAINING_ARGS=(
     --bf16
     --cross-entropy-loss-fusion
     --no-decay-norm-bias
-    --no-load-optim
+    # --no-load-optim
     --optimizer muon
     --muon-matched-adamw-rms 0.2
 )
