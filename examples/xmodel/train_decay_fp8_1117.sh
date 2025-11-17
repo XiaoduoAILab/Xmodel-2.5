@@ -55,7 +55,7 @@ GPT_MODEL_ARGS=(
     --num-query-groups 8
     --ffn-hidden-size 3840
     --position-embedding-type rope
-    --seq-length 4096
+    --seq-length 8192
     --max-position-embeddings 131072
     --rotary-base 500000
     --rotary-percent 1.0
@@ -75,8 +75,8 @@ GPT_MODEL_ARGS=(
 )
 
 TRAINING_ARGS=(
-    --micro-batch-size 4
-    --global-batch-size 1440
+    --micro-batch-size 2
+    --global-batch-size 960
     --train-iters 560000
     --weight-decay 0.1
     --adam-beta1 0.9
