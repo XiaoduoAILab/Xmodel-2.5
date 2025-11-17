@@ -88,7 +88,7 @@ TRAINING_ARGS=(
     --decoupled-min-lr 1.0e-5
     --lr-decay-style linear
     --lr-decay-iters 10000
-    --lr-warmup-iters 500
+    --lr-warmup-iters 1000
     --bf16
     --cross-entropy-loss-fusion
     --no-decay-norm-bias
