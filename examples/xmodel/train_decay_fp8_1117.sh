@@ -76,27 +76,27 @@ GPT_MODEL_ARGS=(
 
 TRAINING_ARGS=(
     --micro-batch-size 5
-    --global-batch-size 960
-    --train-iters 570000
-    --weight-decay 0.1
+    --global-batch-size 1920
+    --train-iters 560000
+    # --weight-decay 0.1
+    --start-weight-decay 0.1
+    --end-weight-decay 0.05
     --adam-beta1 0.9
     --adam-beta2 0.95
     --clip-grad 1.0
-    --lr 1.66667e-3   # decoupled-lr/(hidden_size/256)
-    --decoupled-lr 1e-2
-    --lr-decay-style WSD
-    --lr-wsd-decay-style exponential
-    --min-lr 1.041667e-4  # decoupled-min-lr/(hidden_size/256)
-    --decoupled-min-lr 6.25e-4
-    --lr-decay-iters 20000
-    --lr-wsd-decay-iters 20000
+    --lr 1.041667e-4
+    --decoupled-lr 6.25e-4
+    --min-lr 1.0e-5 
+    --decoupled-min-lr 1.0e-5
+    --lr-decay-style cosine
+    --lr-decay-iters 10000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
-    --no-decay-norm-bias
-    # --no-load-optim
+    --no-decay-norm-bias-embed
+    --no-load-optim
     --optimizer muon
-    --muon-matched-adamw-rms 0.2
+    --muon-matched-adamw-rms 0.15
 )
 
 # Distributed Data Parallel (DDP) arguments
