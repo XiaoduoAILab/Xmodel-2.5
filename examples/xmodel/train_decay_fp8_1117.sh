@@ -95,7 +95,6 @@ TRAINING_ARGS=(
     --no-load-optim
     --optimizer muon
     --muon-matched-adamw-rms 0.2
-    --qk-layernorm
 )
 
 # Distributed Data Parallel (DDP) arguments
