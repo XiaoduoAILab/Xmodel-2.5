@@ -55,7 +55,7 @@ GPT_MODEL_ARGS=(
     --num-query-groups 8
     --ffn-hidden-size 3840
     --position-embedding-type rope
-    --seq-length 16384
+    --seq-length 8192
     --max-position-embeddings 131072
     --rotary-base 500000
     --rotary-percent 1.0
@@ -75,7 +75,7 @@ GPT_MODEL_ARGS=(
 )
 
 TRAINING_ARGS=(
-    --micro-batch-size 1
+    --micro-batch-size 2
     --global-batch-size 240
     --train-iters 560000
     --weight-decay 0.1
@@ -95,6 +95,7 @@ TRAINING_ARGS=(
     --no-load-optim
     --optimizer muon
     --muon-matched-adamw-rms 0.2
+    --qk-layernorm
 )
 
 # Distributed Data Parallel (DDP) arguments
