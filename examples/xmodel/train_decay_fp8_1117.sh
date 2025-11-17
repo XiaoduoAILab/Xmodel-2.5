@@ -76,7 +76,7 @@ GPT_MODEL_ARGS=(
 
 TRAINING_ARGS=(
     --micro-batch-size 1
-    --global-batch-size 960
+    --global-batch-size 240
     --train-iters 560000
     --weight-decay 0.05
     --adam-beta1 0.9
