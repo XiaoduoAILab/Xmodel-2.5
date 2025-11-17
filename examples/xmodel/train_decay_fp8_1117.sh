@@ -55,7 +55,7 @@ GPT_MODEL_ARGS=(
     --num-query-groups 8
     --ffn-hidden-size 3840
     --position-embedding-type rope
-    --seq-length 8192
+    --seq-length 4096
     --max-position-embeddings 131072
     --rotary-base 500000
     --rotary-percent 1.0
@@ -75,8 +75,8 @@ GPT_MODEL_ARGS=(
 )
 
 TRAINING_ARGS=(
-    --micro-batch-size 2
-    --global-batch-size 480
+    --micro-batch-size 4
+    --global-batch-size 960
     --train-iters 560000
     --weight-decay 0.1
     --adam-beta1 0.9
@@ -88,7 +88,8 @@ TRAINING_ARGS=(
     --decoupled-min-lr 1.0e-5
     --lr-decay-style linear
     --lr-decay-iters 10000
-    --lr-warmup-iters 1000
+    --lr-warmup-init 1e-6
+    --lr-warmup-iters 500
     --bf16
     --cross-entropy-loss-fusion
     --no-decay-norm-bias
