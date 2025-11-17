@@ -88,8 +88,8 @@ TRAINING_ARGS=(
     --lr-wsd-decay-style exponential
     --min-lr 1.041667e-4  # decoupled-min-lr/(hidden_size/256)
     --decoupled-min-lr 6.25e-4
-    --lr-decay-iters 40000
-    --lr-wsd-decay-iters 40000
+    --lr-decay-iters 20000
+    --lr-wsd-decay-iters 20000
     --lr-warmup-iters 0
     --bf16
     --cross-entropy-loss-fusion
