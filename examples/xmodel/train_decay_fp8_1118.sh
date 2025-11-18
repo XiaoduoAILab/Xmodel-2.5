@@ -96,7 +96,7 @@ TRAINING_ARGS=(
     --no-load-optim
     --optimizer muon
     --muon-matched-adamw-rms 0.2
-    --seqence-parallel
+    --sequence-parallel
 )
 
 # Distributed Data Parallel (DDP) arguments
