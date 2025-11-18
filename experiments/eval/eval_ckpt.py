@@ -56,7 +56,7 @@ def load_results(result_path: str) -> Dict:
 def run_lm_eval(checkpoint: str, task_name: str, task: Dict) -> Dict:
     """运行lm_eval评测并返回结果"""
 
-    command = f"lm_eval --model hf --model_args pretrained={checkpoint},trust_remote_code=True --tasks {task_name} --device cuda:{args.device} --batch_size {task['batch_size']} --num_fewshot {task['num_fewshot']} --confirm_run_unsafe_code "
+    command = f"lm_eval --model hf --model_args pretrained={checkpoint},trust_remote_code=True,enable_thinking=False --tasks {task_name} --device cuda:{args.device} --batch_size {task['batch_size']} --num_fewshot {task['num_fewshot']} --confirm_run_unsafe_code "
     print('command: ' + str(command))
 
     result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
