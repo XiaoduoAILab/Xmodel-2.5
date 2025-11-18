@@ -269,7 +269,7 @@ class GPTModel(LanguageModule):
             decoder_input = self.embedding(input_ids=input_ids, position_ids=position_ids)
 
             if self.config.use_mup:
-                decoder_input *= self.config.mup_input_scale
+                decoder_input = decoder_input * self.config.mup_input_scale
 
         else:
             # intermediate stage of pipeline
@@ -398,7 +398,7 @@ class GPTModel(LanguageModule):
         # 在 gpt_model.py 的 forward 中，logits 计算后添加：
         if self.config.use_mup:
             width_multiplier = self.config.hidden_size / self.config.mup_base_width
-            logits *= self.config.mup_output_scale / width_multiplier
+            logits = logits * self.config.mup_output_scale / width_multiplier
 
         if has_config_logger_enabled(self.config):
             payload = OrderedDict(
