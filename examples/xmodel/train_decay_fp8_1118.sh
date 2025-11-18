@@ -96,7 +96,7 @@ TRAINING_ARGS=(
     --no-load-optim
     --optimizer muon
     --muon-matched-adamw-rms 0.2
-    --sequence-parallel
+    --recompute-activations
 )
 
 # Distributed Data Parallel (DDP) arguments
@@ -110,7 +110,7 @@ TRAINING_ARGS+=("${DDP_ARGS[@]}")
 
 
 MODEL_PARALLEL_ARGS=(
-    --tensor-model-parallel-size 2
+    --tensor-model-parallel-size 1
     --pipeline-model-parallel-size 1
 )
 
