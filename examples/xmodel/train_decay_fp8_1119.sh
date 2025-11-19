@@ -111,7 +111,7 @@ TRAINING_ARGS+=("${DDP_ARGS[@]}")
 
 MODEL_PARALLEL_ARGS=(
     --tensor-model-parallel-size 1
-    --pipeline-model-parallel-size 8
+    --pipeline-model-parallel-size 1
 )
 
 DATA_ARGS=(
