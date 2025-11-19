@@ -75,8 +75,8 @@ GPT_MODEL_ARGS=(
 )
 
 TRAINING_ARGS=(
-    --micro-batch-size 0.5
-    --global-batch-size 480
+    --micro-batch-size 1
+    --global-batch-size 160
     --train-iters 560000
     --weight-decay 0.1
     --adam-beta1 0.9
@@ -111,7 +111,7 @@ TRAINING_ARGS+=("${DDP_ARGS[@]}")
 
 MODEL_PARALLEL_ARGS=(
     --tensor-model-parallel-size 1
-    --pipeline-model-parallel-size 1
+    --pipeline-model-parallel-size 8
 )
 
 DATA_ARGS=(
