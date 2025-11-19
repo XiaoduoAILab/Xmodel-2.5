@@ -55,7 +55,7 @@ GPT_MODEL_ARGS=(
     --num-query-groups 8
     --ffn-hidden-size 3840
     --position-embedding-type rope
-    --seq-length 16384
+    --seq-length 24576
     --max-position-embeddings 131072
     --rotary-base 500000
     --rotary-percent 1.0
