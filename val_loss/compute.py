@@ -15,6 +15,7 @@ sys.path.append(str(wd))
 print(wd)
 
 from models.modeling_xmodel2 import XmodelForCausalLM
+from val_loss.data_utils import create_dataloaders
 
 
 def get_argument_parser():
@@ -23,7 +24,7 @@ def get_argument_parser():
     # ==============================
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--data_path", type=str, default='/home/data/datasets')
+    parser.add_argument("--data_path", type=str, default='val_loss/val_data/wikitext2')
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--ckpt_folder", type=str, default='/data2/liuyang/Xmodel-2.5-history/')
     return parser
@@ -43,11 +44,10 @@ def estimate_loss(model):
     return np.mean(losses)
 
 
-def eval(folder, max_iter, segment):
-    print(f'processing {folder}...')
+def eval(folder):
+    print(f'evaluating...')
 
-    ckps = [f for f in os.listdir(folder) if
-            f.startswith('iter-') and f.endswith('000') and f <= f"iter-{max_iter:07d}"]
+    ckps = [f for f in os.listdir(folder) if f.startswith('pytorch_model') and f.endswith('000')]
     ckps = sorted(ckps)
     print(ckps)
 
@@ -74,9 +74,9 @@ if __name__ == "__main__":
     vocab_size = 65280
     max_length = 4096
 
-    # run2: 仅包含fineweb-edu，仿照MiniCPM论文中Figure 12: Loss curve on C4 dataset
+    # run2: 仅包含wikitext2，仿照MiniCPM论文中Figure 12: Loss curve on C4 dataset
     data_config = [
-        ("fineweb-edu", 1.0000)
+        ("wikitext2", 1.0000)
     ]
 
     tokenizer_path = f'tokenizers/deepseekv3/'
@@ -97,11 +97,5 @@ if __name__ == "__main__":
 
     segment = args.segment
 
-    if segment == 's1':
-        eval(args.s1_folder, 270000, segment)
-    elif segment == 's2':
-        eval(args.s2_folder, 260000, segment)
-    elif segment == 'decay':
-        eval(args.decay_folder, 25000, segment)
-    else:
-        raise NotImplementedError(f'segment: {segment}')
+    eval(args.ckpt_folder)
+
