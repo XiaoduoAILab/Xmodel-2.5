@@ -56,6 +56,7 @@ def eval(folder):
     config.max_position_embeddings = 131072
     config.rope_theta = 500000
     config.intermediate_size = 3840
+    config._attn_implementation = "flash_attention_2"
     print(f'config: {config}')
     model = XmodelForCausalLM(config)
 
