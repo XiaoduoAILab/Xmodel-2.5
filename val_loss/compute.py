@@ -52,6 +52,9 @@ def eval(folder):
     # print(ckps)
 
     config = XmodelConfig()
+    config.vocab_size = 129280
+    config.max_position_embeddings = 131072
+    config.rope_theta = 500000
     print(f'config: {config}')
     model = XmodelForCausalLM(config)
 
