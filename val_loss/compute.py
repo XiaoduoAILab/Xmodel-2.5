@@ -55,6 +55,7 @@ def eval(folder):
     config.vocab_size = 129280
     config.max_position_embeddings = 131072
     config.rope_theta = 500000
+    config.intermediate_size = 3840
     print(f'config: {config}')
     model = XmodelForCausalLM(config)
 
