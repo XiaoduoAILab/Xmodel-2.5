@@ -71,7 +71,6 @@ class SupervisedDataset(Dataset):
             data_config=data_config,
             train_data_dir=data_args.data_path,
             val_data_dir=None,
-            seed=1337 + seed_offset,
             vocab_size=129280
         )
         self.dataloader_iter = iter(train_dataloader)
