@@ -69,11 +69,10 @@ class SupervisedDataset(Dataset):
             batch_size=1,
             block_size=training_args.model_max_length,
             data_config=data_config,
-            sampling="random",
             train_data_dir=data_args.data_path,
             val_data_dir=None,
             seed=1337 + seed_offset,
-            vocab_size=32000
+            vocab_size=129280
         )
         self.dataloader_iter = iter(train_dataloader)
 
