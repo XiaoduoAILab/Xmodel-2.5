@@ -1,16 +1,18 @@
+#!/usr/bin/env bash
+# 保存为 train_long_context_1120_no_ds.sh
 RUN_NAME="xmodel2.5_long_context"
-LANGUAGE_MODEL="/data2/liuyang/models/xmodel/llama/"
+LANGUAGE_MODEL="/data2/liuyang/i_line_ckpt/i_line_s1_fp8_1117-hf/iter_0560000"
 TOKENIZER_PATH="/data2/liuyang/Xmodel-2.5/tokenizers/deepseekv3/"
 OUTPUT_DIR="./out/${RUN_NAME}/"
+DATA_PATH="${3:-/data1/i_line_data/}"
 
-if [ -z "$3" ]
-  then
-    DATA_PATH="/data1/i_line_data/"
-  else
-    DATA_PATH="$3"
-fi
+# 如果之前装过 deepspeed，先卸掉保证 HF 走原生 FSDP
+# pip uninstall -y deepspeed
 
-CUDA_VISIBLE_DEVICES="$1" torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=8 long_context/train_long_context.py \
+CUDA_VISIBLE_DEVICES=$1 \
+torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
+         --nnodes=1 --nproc-per-node=8 \
+    long_context/train_long_context.py \
     --model_name_or_path ${LANGUAGE_MODEL} \
     --tokenizer_path "${TOKENIZER_PATH}" \
     --data_path "${DATA_PATH}" \
@@ -34,4 +36,4 @@ CUDA_VISIBLE_DEVICES="$1" torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost
     --tf32 True \
     --report_to tensorboard \
     --logging_dir "./runs/${RUN_NAME}/" \
-    --gradient_checkpointing 1
+    --gradient_checkpointing True
