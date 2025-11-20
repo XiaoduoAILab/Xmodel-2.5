@@ -20,7 +20,7 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
     --bf16_full_eval True \
     --output_dir "${OUTPUT_DIR}" \
     --max_steps 3000 \
-    --per_device_train_batch_size 3 \
+    --per_device_train_batch_size 1 \
     --gradient_accumulation_steps 5 \
     --model_max_length 32768 \
     --save_strategy "steps" \

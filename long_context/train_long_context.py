@@ -62,9 +62,6 @@ class SupervisedDataset(Dataset):
             ("sft_mixed", 0.66870),
         ]
 
-        rank = int(os.environ["LOCAL_RANK"])
-        seed_offset = 42 + rank
-
         train_dataloader, val_dataloader = create_dataloaders(
             batch_size=1,
             block_size=training_args.model_max_length,
