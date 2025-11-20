@@ -15,7 +15,7 @@ sys.path.append(str(wd))
 print(wd)
 
 from models.modeling_xmodel2 import XmodelForCausalLM, XmodelConfig
-from val_loss.data_utils import create_dataloaders
+from utils.data_utils import create_dataloaders
 
 
 def get_argument_parser():
@@ -88,9 +88,9 @@ if __name__ == "__main__":
     data_path = args.data_path
     device = f'cuda:{args.device}'
     eval_iters = 100
-    micro_batch_size = 4
-    vocab_size = 65280
-    max_length = 4096
+    micro_batch_size = 5
+    vocab_size = 129280
+    max_length = 3776
 
     # run2: 仅包含wikitext2，仿照MiniCPM论文中Figure 12: Loss curve on C4 dataset
     data_config = [
