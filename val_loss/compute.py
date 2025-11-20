@@ -78,8 +78,9 @@ def eval(folder):
             model.eval()
             iter = int(ckp.split('.')[-1])
             loss = estimate_loss(model)
-            json_line = json.dumps(dict(iter=iter, loss=loss)) + '\n'
-            fp.write(json_line)
+            json_line = json.dumps(dict(iter=iter, loss=loss))
+            print(json_line)
+            fp.write(json_line + '\n')
 
 
 if __name__ == "__main__":
