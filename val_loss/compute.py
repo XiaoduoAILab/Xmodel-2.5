@@ -58,7 +58,15 @@ def eval(folder):
     config.intermediate_size = 3840
     config._attn_implementation = "flash_attention_2"
     print(f'config: {config}')
+
+    default_dtype = torch.get_default_dtype()
+    torch.set_default_dtype(torch.bfloat16)
+
+    # init a new model from scratch
     model = XmodelForCausalLM(config)
+    model.to(device)
+
+    torch.set_default_dtype(default_dtype)
 
     with open(f'val_loss.jsonl', 'w') as fp:
         for ckp in tqdm(ckps):
@@ -66,7 +74,6 @@ def eval(folder):
             print(f'loading model {ckpt_path}')
             state_dict = torch.load(ckpt_path, map_location=device)
             model.load_state_dict(state_dict, strict=False)
-            model = model.to(device)
             model.eval()
             iter = int(ckp.split('.')[-1])
             loss = estimate_loss(model)
