@@ -67,7 +67,7 @@ def eval(folder):
             model.load_state_dict(state_dict, strict=False)
             model = model.to(device)
             model.eval()
-            iter = int(ckp[5:])
+            iter = int(ckp.split('.')[-1])
             loss = estimate_loss(model)
             json_line = json.dumps(dict(iter=iter, loss=loss)) + '\n'
             fp.write(json_line)
