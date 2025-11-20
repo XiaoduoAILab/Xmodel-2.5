@@ -23,7 +23,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
     --per_device_train_batch_size 3 \
     --gradient_accumulation_steps 5 \
     --model_max_length 32768 \
-    --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 300 \
     --save_total_limit 5 \
