@@ -20,7 +20,7 @@ def convert_checkpoint(checkpoint_path, save_dir):
     if os.path.exists(save_dir):
         print('Directory exists, no need to convert:', save_dir)
         return
-    os.makedirs(args.save_dir, exist_ok=True)
+    os.makedirs(save_dir, exist_ok=True)
 
     # Load and merge Megatron-LM checkpoints
     ckpt = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
