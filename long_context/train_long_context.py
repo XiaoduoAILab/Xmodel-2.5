@@ -19,9 +19,8 @@ from utils.data_utils import create_dataloaders
 
 @dataclass
 class ModelArguments:
-    model_name_or_path: Optional[str] = field(default="facebook/opt-125m"),
+    model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
     tokenizer_path: Optional[str] = field(default="facebook/opt-125m")
-
 
 @dataclass
 class DataArguments:
@@ -36,7 +35,6 @@ class TrainingArguments(transformers.TrainingArguments):
         default=512,
         metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
     )
-    template: str = field(default="plan_b")
 
 
 class SupervisedDataset(Dataset):
@@ -84,32 +82,36 @@ class SupervisedDataset(Dataset):
         return dict(input_ids=batch, labels=batch)
 
 
-def make_supervised_data_module(data_args, training_args) -> Dict:
-    """Make dataset and collator for supervised fine-tuning."""
-    train_dataset = SupervisedDataset(data_args=data_args, training_args=training_args)
-    return dict(train_dataset=train_dataset, eval_dataset=None, data_collator=None)
+def make_supervised_data_module(data_args, training_args):
+    # 1. 先建完整 dataset
+    full_dataset = SupervisedDataset(data_args=data_args, training_args=training_args)
+    # 2. 让 Trainer 自己去 shard
+    return {"train_dataset": full_dataset, "eval_dataset": None, "data_collator": None}
 
 
 def train():
     parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
-    rank = int(os.environ["LOCAL_RANK"])
+    # 1. 决定 dtype
+    torch_dtype = (
+        torch.float16 if training_args.fp16  else
+        torch.bfloat16 if training_args.bf16 else
+        torch.float32
+    )
 
-    # `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
-    model = AutoModelForCausalLM.from_pretrained(model_args.model_name_or_path, attn_implementation="flash_attention_2",
-                                                 torch_dtype=torch.bfloat16, use_cache=False)
-    model.to(f'cuda:{rank}')
+    # 2. 加载模型
+    model = AutoModelForCausalLM.from_pretrained(model_args.model_name_or_path, 
+                                                 attn_implementation="flash_attention_2",
+                                                 torch_dtype=torch_dtype, 
+                                                 use_cache=False)
 
-    if rank == 0:
-        print(model)
-
+    # 3. 数据 & Trainer
     data_module = make_supervised_data_module(data_args=data_args, training_args=training_args)
     trainer = Trainer(model=model, args=training_args, **data_module)
-    if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
-        trainer.train(resume_from_checkpoint=True)
-    else:
-        trainer.train()
+
+    # 4. 训练 & 保存模型
+    trainer.train(resume_from_checkpoint=bool(list(Path(training_args.output_dir).glob("checkpoint-*"))))
     trainer.save_state()
     trainer.save_model(output_dir=training_args.output_dir)
 

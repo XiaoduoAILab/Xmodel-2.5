@@ -20,16 +20,16 @@ if __name__ == "__main__":
             iter, loss = data['iter'], data['loss']
 
             if iter <= 270000:
-                tokens =iter * 1966080 / 1024 ** 3
+                tokens =iter * 1812480 / 1024 ** 3
             else:
-                tokens = 270000 * 1966080 / 1024 ** 3 + (iter - 270000) * 3932160 / 1024 ** 3
+                tokens = 270000 * 1812480 / 1024 ** 3 + (iter - 270000) * 3624960 / 1024 ** 3
             x.append(tokens)
             y.append(loss)
 
     plt.plot(x, y)
     plt.xlabel('Tokens (B)')
     plt.ylabel('Loss')
-    plt.ylim(1.6, 3.0)
+    plt.ylim(1.6, 3.5)
     plt.grid(linestyle='dotted')
     plt.savefig('val_loss.pdf')
     plt.show()
