@@ -28,14 +28,14 @@ TENSORBOARD_LOGS_PATH=runs/i_line_s1_fp8_1117
 TOKENIZER_MODEL=tokenizers/deepseekv3
 DATA_PATH="0.18725 /data1/i_line_data/ultrafineweb-en_content_document \
            0.03716 /data1/i_line_data/ultrafineweb-zh_content_document \
-           0.02209 /data1/i_line_data/dolma_wo_cc/starcoder_text_document \
-           0.00287 /data1/i_line_data/dolma_wo_cc/books_text_document \
-           0.01722 /data1/i_line_data/dolma_wo_cc/algebraic-stack-train_text_document \
-           0.01722 /data1/i_line_data/dolma_wo_cc/open-web-math-train_text_document \
-           0.01147 /data1/i_line_data/dolma_wo_cc/wiki_text_document \
-           0.00900 /data1/i_line_data/dolma_wo_cc/stackexchange_text_document \
-           0.00900 /data1/i_line_data/dolma_wo_cc/reddit_text_document \
-           0.01801 /data1/i_line_data/dolma_wo_cc/megawika_text_document \
+           0.02209 /data1/i_line_data/starcoder_text_document \
+           0.00287 /data1/i_line_data/books_text_document \
+           0.01722 /data1/i_line_data/algebraic-stack-train_text_document \
+           0.01722 /data1/i_line_data/open-web-math-train_text_document \
+           0.01147 /data1/i_line_data/wiki_text_document \
+           0.00900 /data1/i_line_data/stackexchange_text_document \
+           0.00900 /data1/i_line_data/reddit_text_document \
+           0.01801 /data1/i_line_data/megawika_text_document \
            0.66870 /data1/i_line_data/sft_mixed_v2_deduped_v4_text-document"
 
 
