@@ -4,7 +4,7 @@ RUN_NAME="xmodel2.5_long_context"
 LANGUAGE_MODEL="/data2/liuyang/i_line_ckpt/i_line_s1_fp8_1117-hf/iter_0560000"
 TOKENIZER_PATH="/data2/liuyang/Xmodel-2.5/tokenizers/deepseekv3/"
 OUTPUT_DIR="./out/${RUN_NAME}/"
-DATA_PATH="${3:-/data1/i_line_data/}"
+DATA_PATH="/data1/i_line_data/"
 
 # 如果之前装过 deepspeed，先卸掉保证 HF 走原生 FSDP
 # pip uninstall -y deepspeed
@@ -16,7 +16,7 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
     --model_name_or_path ${LANGUAGE_MODEL} \
     --tokenizer_path "${TOKENIZER_PATH}" \
     --data_path "${DATA_PATH}" \
-    --fp16 True \  # 修改这里：bf16改为fp16
+    --fp16 True \
     --output_dir "${OUTPUT_DIR}" \
     --max_steps 3000 \
     --per_device_train_batch_size 3 \
