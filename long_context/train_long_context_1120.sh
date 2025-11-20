@@ -17,7 +17,7 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
     --model_name_or_path "${LANGUAGE_MODEL}" \
     --data_path "${DATA_PATH}" \
     --bf16 True \
-    --bf16_full_eval True \  # 添加这个参数
+    --bf16_full_eval True \
     --output_dir "${OUTPUT_DIR}" \
     --max_steps 3000 \
     --per_device_train_batch_size 3 \
