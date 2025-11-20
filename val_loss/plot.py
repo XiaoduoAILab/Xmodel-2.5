@@ -1,4 +1,3 @@
-import argparse
 import json
 import sys
 from pathlib import Path
@@ -11,26 +10,8 @@ sys.path.append(str(wd))
 print(wd)
 
 
-def get_argument_parser():
-    # ==============================
-    # Parse Arguments
-    # ==============================
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("--data_path", type=str, default='/home/data/datasets')
-    parser.add_argument("--run_name", type=str, default='run2')
-
-    return parser
-
-
 if __name__ == "__main__":
-    arg_parser = get_argument_parser()
-    args = arg_parser.parse_args()
-
-    run_name = args.run_name
-
     x, y = [], []
-    start_iter = dict(s1=0, s2=270000, decay=530000)
 
     with open(f'val_loss.jsonl', 'r') as fp:
         lines = fp.readlines()

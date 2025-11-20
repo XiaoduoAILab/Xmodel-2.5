@@ -112,8 +112,8 @@ def convert_checkpoint(checkpoint_path, save_dir):
 
     # Save Huggingface model
     hf_model = hf_model.to(torch.bfloat16)
-    hf_model.save_pretrained(args.save_dir, safe_serialization=False, max_shard_size="20GB")
-    print(f"Converted checkpoint saved to {args.save_dir}")
+    hf_model.save_pretrained(save_dir, safe_serialization=False, max_shard_size="20GB")
+    print(f"Converted checkpoint saved to {save_dir}")
 
     # 在 megatron_to_hf_mup.py 的 convert_checkpoint() 末尾添加
     print("Megatron embed mean:", state_dict['embedding.word_embeddings.weight'].mean().item())
@@ -156,4 +156,10 @@ if __name__ == "__main__":
 
     ckpts = [ckp for ckp in os.listdir(src_path) if ckp.startswith('iter') and ckp.endswith('000')]
     ckpts = sorted(ckpts)
-    print(f'ckpts: {ckpts}')
+    # print(f'ckpts: {ckpts}')
+
+    for ckp in ckpts:
+        ckp_path = os.path.join(src_path, ckp)
+        checkpoint_path = f'{ckp_path}/mp_rank_00/model_optim_rng.pt'
+        save_dir = os.path.join(dst_path, ckp)
+        convert_checkpoint(checkpoint_path, save_dir)
