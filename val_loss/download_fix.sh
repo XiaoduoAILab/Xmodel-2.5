@@ -1,10 +1,10 @@
 printf 'model_optim_rng.pt\xe2\x80\x8b' > /tmp/key.zwsp
 
-ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0538000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0538000/mp_rank_00/model_optim_rng.pt -u
-ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0536000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0536000/mp_rank_00/model_optim_rng.pt -u
-ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0534000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0534000/mp_rank_00/model_optim_rng.pt -u
-ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0532000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0532000/mp_rank_00/model_optim_rng.pt -u
-ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0528000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0528000/mp_rank_00/model_optim_rng.pt -u
+ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0538000/mp_rank_00/$(cat /tmp/key.zwsp) /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0538000/mp_rank_00/model_optim_rng.pt -u
+ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0536000/mp_rank_00/$(cat /tmp/key.zwsp) /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0536000/mp_rank_00/model_optim_rng.pt -u
+ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0534000/mp_rank_00/$(cat /tmp/key.zwsp) /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0534000/mp_rank_00/model_optim_rng.pt -u
+ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0532000/mp_rank_00/$(cat /tmp/key.zwsp) /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0532000/mp_rank_00/model_optim_rng.pt -u
+ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0528000/mp_rank_00/$(cat /tmp/key.zwsp) /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0528000/mp_rank_00/model_optim_rng.pt -u
 ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0526000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0526000/mp_rank_00/model_optim_rng.pt -u
 ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0524000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0524000/mp_rank_00/model_optim_rng.pt -u
 ks3util cp ks3://xd-model/i_line_ckpt/i_line_s1_fp8_0921/iter_0522000/mp_rank_00/model_optim_rng.pt /data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/iter_0522000/mp_rank_00/model_optim_rng.pt -u
