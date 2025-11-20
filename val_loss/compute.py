@@ -51,7 +51,7 @@ def eval(folder):
     ckps = sorted(ckps)
     print(ckps)
 
-    with open(f'{args.run_name}_{segment}.jsonl', 'w') as fp:
+    with open(f'val_loss.jsonl', 'w') as fp:
         for ckp in tqdm(ckps):
             save_folder = os.path.join(folder, ckp)
             model = XmodelForCausalLM.from_pretrained(save_folder, attn_implementation='flash_attention_2',
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     tokenizer_path = f'tokenizers/deepseekv3/'
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
-    print(tokenizer)
+    # print(tokenizer)
     print('tokenizer.eos_token_id: ' + str(tokenizer.eos_token_id))
 
     train_dataloader, val_dataloader = create_dataloaders(
@@ -94,8 +94,6 @@ if __name__ == "__main__":
         eos_token_id=tokenizer.eos_token_id
     )
     dataloader_iter = iter(train_dataloader)
-
-    segment = args.segment
 
     eval(args.ckpt_folder)
 
