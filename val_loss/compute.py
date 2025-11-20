@@ -10,7 +10,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 
 # support running without installing as a package
-wd = Path(__file__).parent.parent.parent.resolve()
+wd = Path(__file__).parent.parent.resolve()
 sys.path.append(str(wd))
 print(wd)
 
