@@ -16,7 +16,7 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
     --model_name_or_path ${LANGUAGE_MODEL} \
     --tokenizer_path "${TOKENIZER_PATH}" \
     --data_path "${DATA_PATH}" \
-    --bf16 True \
+    --fp16 True \  # 修改这里：bf16改为fp16
     --output_dir "${OUTPUT_DIR}" \
     --max_steps 3000 \
     --per_device_train_batch_size 3 \
