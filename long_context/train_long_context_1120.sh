@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 保存为 train_long_context_1120_no_ds.sh
+# 保存为 train_long_context_1120.sh
 RUN_NAME="xmodel2.5_long_context"
 LANGUAGE_MODEL="/data2/liuyang/i_line_ckpt/i_line_s1_fp8_1117-hf/iter_0560000"
 TOKENIZER_PATH="/data2/liuyang/Xmodel-2.5/tokenizers/deepseekv3/"
