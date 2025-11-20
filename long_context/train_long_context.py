@@ -109,7 +109,8 @@ def train():
     model = AutoModelForCausalLM.from_pretrained(model_args.model_name_or_path, 
                                                  attn_implementation="flash_attention_2",
                                                  torch_dtype=torch_dtype, 
-                                                 use_cache=False)
+                                                 use_cache=False,
+                                                 trust_remote_code=True)
 
     # 3. 数据 & Trainer
     data_module = make_supervised_data_module(data_args=data_args, training_args=training_args)
