@@ -14,7 +14,7 @@ wd = Path(__file__).parent.parent.resolve()
 sys.path.append(str(wd))
 print(wd)
 
-from models.modeling_xmodel2 import XmodelForCausalLM
+from models.modeling_xmodel2 import XmodelForCausalLM, XmodelConfig
 from val_loss.data_utils import create_dataloaders
 
 
@@ -49,13 +49,19 @@ def eval(folder):
 
     ckps = [f for f in os.listdir(folder) if f.startswith('pytorch_model') and f.endswith('000')]
     ckps = sorted(ckps)
-    print(ckps)
+    # print(ckps)
+
+    config = XmodelConfig()
+    print(f'config: {config}')
+    model = XmodelForCausalLM(config)
 
     with open(f'val_loss.jsonl', 'w') as fp:
         for ckp in tqdm(ckps):
-            save_folder = os.path.join(folder, ckp)
-            model = XmodelForCausalLM.from_pretrained(save_folder, attn_implementation='flash_attention_2',
-                                                      torch_dtype=torch.bfloat16, device_map=device)
+            ckpt_path = os.path.join(folder, ckp)
+            print(f'loading model {ckpt_path}')
+            state_dict = torch.load("pytorch_model.bin", map_location=device)
+            model.load_state_dict(state_dict, strict=False)
+            model = model.to(device)
             model.eval()
             iter = int(ckp[5:])
             loss = estimate_loss(model)
