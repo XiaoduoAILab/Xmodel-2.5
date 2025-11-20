@@ -59,7 +59,7 @@ def eval(folder):
         for ckp in tqdm(ckps):
             ckpt_path = os.path.join(folder, ckp)
             print(f'loading model {ckpt_path}')
-            state_dict = torch.load("pytorch_model.bin", map_location=device)
+            state_dict = torch.load(ckpt_path, map_location=device)
             model.load_state_dict(state_dict, strict=False)
             model = model.to(device)
             model.eval()
