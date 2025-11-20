@@ -15,7 +15,6 @@ torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 \
          --nnodes=1 --nproc-per-node=8 \
     long_context/train_long_context.py \
     --model_name_or_path "${LANGUAGE_MODEL}" \
-    --tokenizer_path "${TOKENIZER_PATH}" \
     --data_path "${DATA_PATH}" \
     --bf16 True \
     --bf16_full_eval True \  # 添加这个参数
