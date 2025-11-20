@@ -20,7 +20,6 @@ from utils.data_utils import create_dataloaders
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
-    tokenizer_path: Optional[str] = field(default="facebook/opt-125m")
 
 @dataclass
 class DataArguments:
