@@ -34,6 +34,12 @@ class TrainingArguments(transformers.TrainingArguments):
         default=512,
         metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
     )
+    
+    def __post_init__(self):
+        # 在父类__post_init__之前设置bf16_full_eval
+        if self.bf16:
+            self.bf16_full_eval = True
+        super().__post_init__()
 
 
 class SupervisedDataset(Dataset):
