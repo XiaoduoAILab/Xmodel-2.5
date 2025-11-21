@@ -162,7 +162,7 @@ if __name__ == "__main__":
     # print(f'ckpts: {ckpts}')
 
     if args.reverse:
-        ckpts = reversed(ckpts)
+        ckpts = list(reversed(ckpts))
 
     for ckp in tqdm(ckpts):
         ckp_path = os.path.join(src_path, ckp)
