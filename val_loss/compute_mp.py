@@ -64,62 +64,82 @@ def eval_checkpoint(args):
     device = f'cuda:{gpu_id}'
     print(f"Processing {ckpt_path} on GPU {gpu_id}")
     
-    # Initialize tokenizer and dataloader for this process
-    tokenizer_path = 'tokenizers/deepseekv3/'
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
-    
-    data_config = [("wikitext2", 1.0000)]
-    
-    train_dataloader, val_dataloader = create_dataloaders(
-        batch_size=micro_batch_size,
-        block_size=max_length,
-        data_config=data_config,
-        train_data_dir=data_path,
-        val_data_dir=None,
-        vocab_size=vocab_size,
-        eos_token_id=tokenizer.eos_token_id
-    )
-    dataloader_iter = iter(train_dataloader)
-    
-    # Initialize model
-    config = XmodelConfig()
-    config.vocab_size = 129280
-    config.max_position_embeddings = 131072
-    config.rope_theta = 500000
-    config.intermediate_size = 3840
-    config.use_mup = True
-    config._attn_implementation = "flash_attention_2"
-    
-    default_dtype = torch.get_default_dtype()
-    torch.set_default_dtype(torch.bfloat16)
-    
-    model = XmodelForCausalLM(config)
-    model.to(device)
-    
-    torch.set_default_dtype(default_dtype)
-    
-    # Load checkpoint and evaluate
-    state_dict = torch.load(ckpt_path, map_location=device)
-    model.load_state_dict(state_dict, strict=False)
-    model.eval()
-    
-    iter_num = int(os.path.basename(ckpt_path).split('.')[-1])
-    loss = estimate_loss(model, dataloader_iter, train_dataloader, device, eval_iters)
-    
-    result = {
-        'iter': iter_num,
-        'loss': loss,
-        'gpu': gpu_id
-    }
-    
-    # Append result to shared file
-    with open('val_loss.jsonl', 'a') as fp:
-        json_line = json.dumps(result)
-        fp.write(json_line + '\n')
-        fp.flush()
-    
-    print(f"GPU {gpu_id}: iter={iter_num}, loss={loss:.4f}")
-    return result
+    try:
+        # Initialize tokenizer and dataloader for this process
+        tokenizer_path = 'tokenizers/deepseekv3/'
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
+        
+        data_config = [("wikitext2", 1.0000)]
+        
+        train_dataloader, val_dataloader = create_dataloaders(
+            batch_size=micro_batch_size,
+            block_size=max_length,
+            data_config=data_config,
+            train_data_dir=data_path,
+            val_data_dir=None,
+            vocab_size=vocab_size,
+            eos_token_id=tokenizer.eos_token_id
+        )
+        dataloader_iter = iter(train_dataloader)
+        
+        # Initialize model
+        config = XmodelConfig()
+        config.vocab_size = 129280
+        config.max_position_embeddings = 131072
+        config.rope_theta = 500000
+        config.intermediate_size = 3840
+        config.use_mup = True
+        config._attn_implementation = "flash_attention_2"
+        
+        default_dtype = torch.get_default_dtype()
+        torch.set_default_dtype(torch.bfloat16)
+        
+        model = XmodelForCausalLM(config)
+        model.to(device)
+        
+        torch.set_default_dtype(default_dtype)
+        
+        # Load checkpoint and evaluate
+        state_dict = torch.load(ckpt_path, map_location=device)
+        model.load_state_dict(state_dict, strict=False)
+        model.eval()
+        
+        iter_num = int(os.path.basename(ckpt_path).split('.')[-1])
+        loss = estimate_loss(model, dataloader_iter, train_dataloader, device, eval_iters)
+        
+        result = {
+            'iter': iter_num,
+            'loss': loss,
+            'gpu': gpu_id
+        }
+        
+        # Append result to shared file
+        with open('val_loss.jsonl', 'a') as fp:
+            json_line = json.dumps(result)
+            fp.write(json_line + '\n')
+            fp.flush()
+        
+        print(f"GPU {gpu_id}: iter={iter_num}, loss={loss:.4f}")
+        
+        # Clean up to prevent memory leaks
+        del model
+        del state_dict
+        del train_dataloader
+        del val_dataloader
+        del dataloader_iter
+        torch.cuda.empty_cache()
+        
+        return result
+        
+    except Exception as e:
+        print(f"Error evaluating checkpoint {ckpt_path} on GPU {gpu_id}: {e}")
+        # Clean up even if there's an error
+        if 'model' in locals():
+            del model
+        if 'state_dict' in locals():
+            del state_dict
+        torch.cuda.empty_cache()
+        raise e
 
 
 def get_pending_checkpoints(ckpt_folder):
