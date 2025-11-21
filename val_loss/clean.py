@@ -19,8 +19,8 @@ if __name__ == "__main__":
     for item in data:
         raw_generation = item[0]
         cleaned = clean_generation(raw_generation)
-        print("raw_generation:", raw_generation)
-        print("cleaned:", cleaned)
+        print("raw_generation:\n", raw_generation)
+        print("cleaned:\n", cleaned)
         break
         
 
