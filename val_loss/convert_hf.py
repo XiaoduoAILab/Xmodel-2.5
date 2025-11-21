@@ -166,4 +166,5 @@ if __name__ == "__main__":
         try:
             convert_checkpoint(checkpoint_path, save_dir)
         except KeyError as err:
+            print(ckp)
             print(err)
