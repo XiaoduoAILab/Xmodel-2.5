@@ -12,7 +12,10 @@ for sub in tqdm(os.listdir(src_folder)):
     src_path = os.path.join(sub_path, "pytorch_model.bin")
     dst_path = os.path.join(dst_folder, f"pytorch_model.{iter_num}")
 
-    if os.path.isfile(src_path) and os.path.getsize(src_path) == 2700260395 and not os.path.isfile(dst_path): 
+    if os.path.isfile(src_path) and \
+        os.path.getsize(src_path) == 2700260395 \
+            and (not os.path.isfile(dst_path) or \
+                 os.path.getsize(dst_path) != 2700260395): 
         print(f'src_path: {src_path}')
         print(f'dst_path: {dst_path}')
         shutil.copy2(src_path, dst_path) 
