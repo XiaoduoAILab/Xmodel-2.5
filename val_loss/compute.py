@@ -69,10 +69,17 @@ def eval(folder):
 
     torch.set_default_dtype(default_dtype)
 
+    with open(f'val_loss.jsonl', 'r') as fp:
+        lines = fp.readlines()
+    
+    items = [json.loads(line) for line in lines]
+    iters_done = [it['iter'] for it in items]
+    ckps = [ckp for ckp in ckps if int(ckp.split('.')[-1]) not in iters_done]
+
     with open(f'val_loss.jsonl', 'w') as fp:
         for ckp in tqdm(ckps):
             ckpt_path = os.path.join(folder, ckp)
-            print(f'loading model {ckpt_path}')
+            print(f'processing model {ckpt_path}')
             state_dict = torch.load(ckpt_path, map_location=device)
             model.load_state_dict(state_dict, strict=False)
             model.eval()
