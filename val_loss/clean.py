@@ -6,9 +6,9 @@ def clean_generation(text: str) -> str:
     text = text.split("<|im_start|>assistant")[-1]
     text = text.split("<|im_end|>")[0]
     # 去掉首尾空白、空行
-    text = text.strip()
+    # text = text.strip()
     # 如果前面有多余的换行或注释，也一并去掉
-    text = re.sub(r'^\s*\n', '', text)
+    # text = re.sub(r'^\s*\n', '', text)
     return text
 
 if __name__ == "__main__":
