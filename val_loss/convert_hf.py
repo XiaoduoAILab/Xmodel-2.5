@@ -3,7 +3,7 @@ import os
 import shutil
 import sys
 import json
-
+from tqdm import tqdm
 import torch
 
 # Add project root to Python path
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     ckpts = sorted(ckpts)
     # print(f'ckpts: {ckpts}')
 
-    for ckp in ckpts:
+    for ckp in tqdm(ckpts):
         ckp_path = os.path.join(src_path, ckp)
         checkpoint_path = f'{ckp_path}/mp_rank_00/model_optim_rng.pt'
         save_dir = os.path.join(dst_path, ckp)
