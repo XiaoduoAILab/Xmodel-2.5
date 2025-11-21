@@ -145,6 +145,7 @@ def get_argument_parser():
 
     parser.add_argument("--src_path", type=str, default='/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921/')
     parser.add_argument("--dst_path", type=str, default='/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921-hf/')
+    parser.add_argument("--reverse", action="store_true", help="reverse")
 
     return parser
 
@@ -159,6 +160,9 @@ if __name__ == "__main__":
     ckpts = [ckp for ckp in os.listdir(src_path) if ckp.startswith('iter') and ckp.endswith('000')]
     ckpts = sorted(ckpts)
     # print(f'ckpts: {ckpts}')
+
+    if args.reverse:
+        ckpts = reversed(ckpts)
 
     for ckp in tqdm(ckpts):
         ckp_path = os.path.join(src_path, ckp)
