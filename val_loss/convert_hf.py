@@ -19,7 +19,7 @@ def convert_checkpoint(checkpoint_path, save_dir):
     # Handle save directory
     if os.path.exists(save_dir):
         file_path = os.path.join(save_dir, "pytorch_model.bin")
-        if os.path.isfile(file_path) and os.path.getsize(file_path) == 2700432505:
+        if os.path.isfile(file_path) and os.path.getsize(file_path) == 2700260395:
             print('Directory exists, no need to convert:', save_dir)
             return
     os.makedirs(save_dir, exist_ok=True)
