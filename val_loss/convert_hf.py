@@ -113,13 +113,13 @@ def convert_checkpoint(checkpoint_path, save_dir):
     # Save Huggingface model
     hf_model = hf_model.to(torch.bfloat16)
     hf_model.save_pretrained(save_dir, safe_serialization=False, max_shard_size="20GB")
-    print(f"Converted checkpoint saved to {save_dir}")
+    # print(f"Converted checkpoint saved to {save_dir}")
 
     # 在 megatron_to_hf_mup.py 的 convert_checkpoint() 末尾添加
-    print("Megatron embed mean:", state_dict['embedding.word_embeddings.weight'].mean().item())
-    print("HF embed mean:", hf_model.model.embed_tokens.weight.mean().item())
+    # print("Megatron embed mean:", state_dict['embedding.word_embeddings.weight'].mean().item())
+    # print("HF embed mean:", hf_model.model.embed_tokens.weight.mean().item())
     # print("Megatron lm_head mean:", state_dict['decoder.output_layer.weight'].mean().item())
-    print("HF lm_head mean:", hf_model.lm_head.weight.mean().item())
+    # print("HF lm_head mean:", hf_model.lm_head.weight.mean().item())
 
 
 def copy_huggingface_tokenizer(dst_path):
