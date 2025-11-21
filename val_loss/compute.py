@@ -76,7 +76,7 @@ def eval(folder):
     iters_done = [it['iter'] for it in items]
     ckps = [ckp for ckp in ckps if int(ckp.split('.')[-1]) not in iters_done]
 
-    with open(f'val_loss.jsonl', 'w') as fp:
+    with open(f'val_loss.jsonl', 'a') as fp:
         for ckp in tqdm(ckps):
             ckpt_path = os.path.join(folder, ckp)
             print(f'processing model {ckpt_path}')
@@ -88,6 +88,7 @@ def eval(folder):
             json_line = json.dumps(dict(iter=iter, loss=loss))
             print(json_line)
             fp.write(json_line + '\n')
+            fp.flush()
 
 
 if __name__ == "__main__":
