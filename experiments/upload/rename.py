@@ -12,4 +12,5 @@ for sub in os.listdir(src_folder):
     dst_path = os.path.join(dst_folder, f"pytorch_model.{iter_num}")
     print(f'src_path: {src_path}')
     print(f'dst_path: {dst_path}')
-    shutil.copy2(src_path, dst_path) 
+    if os.path.isfile(src_path) and os.path.getsize(src_path) == 2700260395 and not os.path.isfile(dst_path): 
+        shutil.copy2(src_path, dst_path) 
