@@ -26,7 +26,7 @@ def convert_checkpoint(checkpoint_path, save_dir):
     ckpt = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
     state_dict = ckpt['model']
     mcore_args = ckpt['args']
-    print(f'mcore_args: {mcore_args}')
+    # print(f'mcore_args: {mcore_args}')
 
     # Initialize Huggingface model config
     config = XmodelConfig()
@@ -57,10 +57,10 @@ def convert_checkpoint(checkpoint_path, save_dir):
 
     config.torch_dtype = torch.bfloat16
 
-    print(f'config: {config}')
+    # print(f'config: {config}')
 
     hf_model = XmodelForCausalLM(config)
-    print(f'hf_model: {hf_model}')
+    # print(f'hf_model: {hf_model}')
 
     checkpoint_embed = state_dict['embedding.word_embeddings.weight']
     checkpoint_embed_size = checkpoint_embed.shape[0]
