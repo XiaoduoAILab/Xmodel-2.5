@@ -174,3 +174,9 @@ if __name__ == "__main__":
         except KeyError as err:
             print(ckp)
             print(err)
+        except EOFError as err:
+            print(ckp)
+            print(err)
+        except Exception as exp:
+            print(ckp)
+            print(err)
