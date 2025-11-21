@@ -11,6 +11,10 @@ import torch
 from tqdm import tqdm
 from transformers import AutoTokenizer
 
+# Set multiprocessing start method to 'spawn' for CUDA compatibility
+if mp.get_start_method(allow_none=True) is None:
+    mp.set_start_method('spawn', force=True)
+
 # support running without installing as a package
 wd = Path(__file__).parent.parent.resolve()
 sys.path.append(str(wd))
@@ -37,12 +41,19 @@ def get_batch(dataloader_iter, device):
 
 
 @torch.no_grad()
-def estimate_loss(model, dataloader_iter, device, eval_iters):
+def estimate_loss(model, dataloader_iter, train_dataloader, device, eval_iters):
     losses = []
     for k in range(eval_iters):
-        batch = get_batch(dataloader_iter, device)
-        loss = model(batch, labels=batch).loss
-        losses.append(float(loss.detach().cpu().numpy()))
+        try:
+            batch = get_batch(dataloader_iter, device)
+            loss = model(batch, labels=batch).loss
+            losses.append(float(loss.detach().cpu().numpy()))
+        except StopIteration:
+            # Reset dataloader if we run out of data
+            dataloader_iter = iter(train_dataloader)
+            batch = get_batch(dataloader_iter, device)
+            loss = model(batch, labels=batch).loss
+            losses.append(float(loss.detach().cpu().numpy()))
     return np.mean(losses)
 
 
@@ -93,7 +104,7 @@ def eval_checkpoint(args):
     model.eval()
     
     iter_num = int(os.path.basename(ckpt_path).split('.')[-1])
-    loss = estimate_loss(model, dataloader_iter, device, eval_iters)
+    loss = estimate_loss(model, dataloader_iter, train_dataloader, device, eval_iters)
     
     result = {
         'iter': iter_num,
