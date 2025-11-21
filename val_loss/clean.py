@@ -19,10 +19,12 @@ if __name__ == "__main__":
     for item in data:
         raw_generation = item[0]
         cleaned = clean_generation(raw_generation)
-        print("raw_generation:\n", raw_generation)
-        print("cleaned:\n", cleaned)
-        break
+        # print("raw_generation:\n", raw_generation)
+        # print("cleaned:\n", cleaned)
+        item[0] = cleaned
         
+    with open(file_path.replace(".json", "_cleaned.json"), "w") as f:
+        json.dump(data, f, indent=2)
 
     # 假设 raw_generation 是模型输出的原始字符串
     #cleaned = clean_generation(raw_generation)
