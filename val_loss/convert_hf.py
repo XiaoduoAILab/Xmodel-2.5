@@ -162,4 +162,8 @@ if __name__ == "__main__":
         ckp_path = os.path.join(src_path, ckp)
         checkpoint_path = f'{ckp_path}/mp_rank_00/model_optim_rng.pt'
         save_dir = os.path.join(dst_path, ckp)
-        convert_checkpoint(checkpoint_path, save_dir)
+
+        try:
+            convert_checkpoint(checkpoint_path, save_dir)
+        except KeyError as err:
+            print(err)
