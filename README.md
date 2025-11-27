@@ -65,9 +65,126 @@ Xmodel-2.5是一个13亿参数的小语言模型，专门设计作为**轻量级
 | CMMLU | 47.16 | 44.29 | +2.87 |
 | C-Eval | 45.54 | 43.16 | +2.38 |
 
+
 ## 🛠️ Install
 
 1. 克隆仓库并进入目录
    ```bash
    git clone https://github.com/XiaoduoAILab/Xmodel-2.5.git
    cd Xmodel-2.5
+   ```
+
+2. 安装依赖
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 🗝️ Quick Start
+
+#### 下载Xmodel-2.5模型
+
+模型文件已在HuggingFace完全开源，可以在[这里](https://huggingface.co/XiaoduoAILab/Xmodel-2.5)下载。我们提供预训练模型和指令调优版本。
+
+#### Xmodel-2.5推理示例
+
+下载模型文件后，可以运行以下脚本进行推理：
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import os
+
+model_path = os.path.expanduser("/path/to/Xmodel-2.5")
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    torch_dtype="auto",
+    device_map="auto",
+    trust_remote_code=True
+)
+tokenizer = AutoTokenizer.from_pretrained(
+    model_path,
+    trust_remote_code=True
+)
+
+prompt = "Explain the concept of transfer learning in machine learning."
+messages = [{"role": "user", "content": prompt}]
+text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True
+)
+
+model_inputs = tokenizer(text, return_tensors="pt").to(model.device)
+
+# 生成配置
+generated_ids = model.generate(
+    **model_inputs,
+    max_new_tokens=512,
+    do_sample=True,
+    top_p=0.9,
+    temperature=0.7,
+    pad_token_id=tokenizer.eos_token_id
+)
+
+output = tokenizer.decode(
+    generated_ids[0][len(model_inputs.input_ids[0]):], 
+    skip_special_tokens=True
+)
+print("Generated Response:")
+print(output)
+```
+
+## 🏗️ Training Details
+
+### 模型架构
+
+| 超参数 | 值 |
+|--------|-----|
+| Hidden size | 1536 |
+| 中间层大小 | 3840 |
+| Transformer层数 | 48 |
+| 注意力头数(Q) | 24 |
+| KV头数(GQA) | 8 |
+| 序列长度 | 3712 |
+| 最大位置编码 | 131072 |
+| RoPE基数 | 500000 |
+
+### 训练策略
+
+- **三阶段WSD课程**：560k步骤，1.4T tokens
+- **Warmup阶段**：2k步骤，学习率线性上升
+- **Stable阶段**：530k步骤，批量大小逐步增加
+- **Decay阶段**：20k步骤，混合66.9%高质量SFT数据
+- **长上下文适应**：10k额外步骤，支持16K上下文
+
+### 技术创新
+
+- **μP超参数传递**：从20M参数代理模型直接传递到完整模型
+- **优化器切换**：衰减阶段AdamW→Muon，提升推理性能
+- **FPS混合精度**：FP8格式显著提升训练效率
+
+## 📜 Citation
+
+如果Xmodel-2.5对您的研究或应用有帮助，请考虑引用我们的工作：
+
+```bibtex
+@misc{liu2025xmodel25,
+      title={Xmodel-2.5: 1.3B Data-Efficient Reasoning SLM}, 
+      author={Yang Liu and Xiaolong Zhong and Ling Jiang},
+      year={2025},
+      eprint={2511.19496},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2511.19496}, 
+}
+```
+
+## 📞 Contact
+
+如有问题或建议，请通过以下方式联系我们：
+- GitHub Issues: [Xmodel-2.5 Issues](https://github.com/XiaoduoAILab/Xmodel-2.5/issues)
+- 邮箱: foamilu@yeah.net
+
+## 📄 License
+
+本项目采用Apache-2.0许可证。详见[LICENSE](LICENSE)文件。
+```
