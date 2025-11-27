@@ -15,9 +15,10 @@ if __name__ == "__main__":
 
     with open(f'val_loss.jsonl', 'r') as fp:
         lines = fp.readlines()
-        for line in lines:
-            data = json.loads(line)
-            iter, loss = data['iter'], data['loss']
+        items = [json.loads(line) for line in lines]
+        items = sorted(items, key=lambda x: x['iter'])
+        for item in items:
+            iter, loss = item['iter'], item['loss']
 
             if iter <= 270000:
                 tokens =iter * 1812480 / 1024 ** 3
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     plt.plot(x, y)
     plt.xlabel('Tokens (B)')
     plt.ylabel('Loss')
-    plt.ylim(1.6, 3.5)
+    plt.ylim(2.2, 3.5)
     plt.grid(linestyle='dotted')
     plt.savefig('val_loss.pdf')
     plt.show()

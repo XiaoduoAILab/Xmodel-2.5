@@ -18,16 +18,17 @@ stable_sizes = np.array([41.00, 26.00, 20.00, 3.91, 2.85, 1.33, 1.00, 1.00,
 
 # 2. Decay 阶段数据（已换算成 %） ---------------------------------------
 decay_raw = {
-    'fineweb-edu': 0.17888,
-    'dolma': 0.04472,
-    'wiki': 0.01096,
-    'book': 0.00274,
-    'chinese-fineweb-edu-v2': 0.0355,
-    'open-web-math-train': 0.01645,
-    'algebraic-stack-train': 0.01645,
-    'starcoder': 0.0211,
-    'SFT_mixed': 0.6388,
-    'multilang_wiki': 0.0344
+    'ultrafineweb-en': 0.18725,
+    'ultrafineweb-zh': 0.03716,
+    'starcoder': 0.02209,  
+    'books': 0.00287,
+    'algebraic-stack-train': 0.01722,
+    'open-web-math-train': 0.01722,
+    'wiki': 0.01147,     
+    'stackexchange': 0.00900,
+    'reddit': 0.00900,
+    'megawika': 0.01801,
+    'SFT_mixed': 0.66870,
 }
 decay_labels = list(decay_raw.keys())
 decay_sizes  = np.array(list(decay_raw.values())) * 100   # 转为百分比

@@ -2,7 +2,8 @@ import os
 import shutil
 from tqdm import tqdm
 
-src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921-hf/"
+# src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_0921-hf/"
+src_folder = "/data2/liuyang/i_line_ckpt/i_line_s1_fp8_1117-hf"
 dst_folder = "/data2/liuyang/Xmodel-2.5-history/"
 
 for sub in tqdm(os.listdir(src_folder)):
